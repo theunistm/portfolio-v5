@@ -1,0 +1,45 @@
+/* Font definitions for local font files */
+
+/* PP Mondwest - Main Font */
+@font-face {
+  font-family: 'PP Mondwest';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/PPMondwest/PPMondwest-Regular.woff2') format('woff2'),
+       url('../fonts/PPMondwest/PPMondwest-Regular.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Mondwest';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/PPMondwest/PPMondwest-Bold.woff2') format('woff2'),
+       url('../fonts/PPMondwest/PPMondwest-Bold.woff') format('woff');
+  font-display: swap;
+}
+
+/* Inter - Secondary Font */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Inter/Inter_24pt-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../fonts/Inter/Inter_24pt-Medium.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/Inter/Inter_24pt-Bold.ttf') format('truetype');
+  font-display: swap;
+}

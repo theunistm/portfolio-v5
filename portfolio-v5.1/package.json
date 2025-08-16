@@ -1,6 +1,7 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "devDependencies": {
-    "@astrojs/tailwind": "^6.0.2",
+    "astro": "^4.14.0",
     "tailwindcss": "^4.1.11"
   },
   "dependencies": {

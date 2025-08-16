@@ -1,0 +1,65 @@
+---
+interface Props {
+  opacity?: number;
+  isLightBg?: boolean;
+}
+
+const { opacity = 0.8, isLightBg = true } = Astro.props;
+
+// Import CSS
+import './BackgroundStatic.css';
+---
+
+<div class="fuzzy-overlay-container">
+  <div 
+    class={`fuzzy-overlay ${isLightBg ? 'fuzzy-overlay--light' : 'fuzzy-overlay--dark'}`} 
+    style={`opacity: ${opacity};`}
+  ></div>
+</div>
+
+<script>
+  // Generate noise texture in memory and apply it to the overlay
+  document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.querySelector('.fuzzy-overlay');
+    if (!overlay) return;
+    
+    generateNoiseTexture(overlay);
+  });
+
+  // Create a noise texture
+  function generateNoiseTexture(overlayElement) {
+    const size = 256;
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    
+    if (!ctx) return;
+    
+    // Create the noise data
+    const imageData = ctx.createImageData(size, size);
+    const data = imageData.data;
+    
+    // Generate very subtle noise for light background
+    for (let i = 0; i < data.length; i += 4) {
+      // Generate values close to middle gray
+      // This creates subtle variations that work well with soft-light blend mode
+      const baseValue = 220; // Light base color
+      const variation = 25;  // Small variation
+      
+      // Create subtle noise around baseValue
+      const v = baseValue - variation + Math.floor(Math.random() * (variation * 2));
+      
+      data[i] = data[i+1] = data[i+2] = v;
+      data[i+3] = 255; // Full alpha
+    }
+    
+    // Put the image data on the canvas
+    ctx.putImageData(imageData, 0, 0);
+    
+    // Apply directly to the overlay as a data URL
+    const dataUrl = canvas.toDataURL('image/png');
+    overlayElement.style.backgroundImage = `url(${dataUrl})`;
+    console.log('Generated and applied noise texture in memory');
+  }
+</script>

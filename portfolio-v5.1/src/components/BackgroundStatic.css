@@ -1,0 +1,39 @@
+/**
+ * CSS-based static background effect
+ */
+.fuzzy-overlay-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.fuzzy-overlay {
+  position: absolute;
+  inset: -200%; /* Extends far beyond the viewport for animation room */
+  background-repeat: repeat;
+  animation: shift 0.2s linear infinite both; /* Original animation speed */
+}
+
+@keyframes shift {
+  0% {
+    transform: translateX(10%) translateY(10%);
+  }
+  100% {
+    transform: translateX(-10%) translateY(-10%);
+  }
+}
+
+/* Add class for light background */
+.fuzzy-overlay--light {
+  mix-blend-mode: overlay;
+}
+
+/* Add class for dark background */
+.fuzzy-overlay--dark {
+  mix-blend-mode: screen;
+}
