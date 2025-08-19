@@ -1,0 +1,13 @@
+---
+import { ReactNode } from 'react';
+import BioInteractive from './BioSectionInteractive.jsx';
+
+interface Props {
+  className?: string;
+}
+
+const { className = "h5" } = Astro.props;
+---
+
+<BioInteractive className={className} client:visible />
+

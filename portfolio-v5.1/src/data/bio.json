@@ -1,0 +1,30 @@
+{
+  "text": "I'm a maker of things based in Windhoek. Right now I'm building an e-commerce app for Nampharm. I believe in cutting through the BS.",
+  "interactiveWords": ["things", "Windhoek", "building", "e-commerce app", "Nampharm", "BS"],
+  "expansions": {
+    "things": {
+      "text": "like sites & apps",
+      "expansions": {}
+    },
+    "Windhoek": {
+      "text": "the capital of Namibia",
+      "expansions": {}
+    },
+    "building": {
+      "text": "using pixels & code",
+      "expansions": {}
+    },
+    "e-commerce app": {
+      "text": "along with internal tools",
+      "expansions": {}
+    },
+    "Nampharm": {
+      "text": ", previously at Buddy Industries",
+      "expansions": {}
+    },
+    "BS": {
+      "text": "by creating actual working solutions",
+      "expansions": {}
+    }
+  }
+}

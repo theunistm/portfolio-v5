@@ -13,15 +13,18 @@ import './BackgroundStatic.css';
 <div class="fuzzy-overlay-container">
   <div 
     class={`fuzzy-overlay ${isLightBg ? 'fuzzy-overlay--light' : 'fuzzy-overlay--dark'}`} 
-    style={`opacity: ${opacity};`}
+    id="fuzzy-overlay"
   ></div>
 </div>
 
-<script>
+<script define:vars={{opacity}}>
   // Generate noise texture in memory and apply it to the overlay
   document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.querySelector('.fuzzy-overlay');
     if (!overlay) return;
+    
+    // Set opacity from component props
+    overlay.style.opacity = opacity;
     
     generateNoiseTexture(overlay);
   });

@@ -1,6 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
 import BackgroundStatic from "../components/BackgroundStatic.astro";
+import Icon from "../components/Icon.astro";
+import BioSectionInteractive from "../components/BioSectionInteractive.astro";
 ---
 <Base title="Theunis Hall — Portfolio">
   <BackgroundStatic opacity={0.3} isLightBg={true} />
@@ -8,12 +10,20 @@ import BackgroundStatic from "../components/BackgroundStatic.astro";
   <main class="relative z-10 container-page py-16 md:py-24">
     <section class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
       <div>
-        <h1 class="h1-display">Hi, I'm Theunis ✨</h1>
-        <p class="p-lede mt-5 max-w-prose">
-          I'm a product designer based in <span class="underline decoration-[color:var(--border)]">Windhoek</span>. Right now I'm building an e‑commerce app for Nampharm. I believe cutting through the BS.
-        </p>
+        <h1 class="h1-display flex items-center gap-3">Hi, I'm Theunis <Icon name="wave" size={32} class="text-[#500F0B] mt-1" /></h1>
+        <div class="mt-5 max-w-prose">
+          <BioSectionInteractive className="h5" />
+        </div>
       </div>
-      <div class="rounded-3xl overflow-hidden border border-[color:var(--border)] bg-white/60 shadow-sm aspect-[3/4]"></div>
+      <div class="rounded-3xl overflow-hidden border border-[color:var(--border)] bg-white/60 aspect-[3/4]">
+        <img 
+          src="/images/profile-01.png" 
+          alt="Profile photo of Theunis Hall, looking to the side on a cloudy beach, wearing a black cap and checkered shirt" 
+          class="w-full h-full object-cover"
+          width="500"
+          height="667"
+        />
+      </div>
     </section>
 
     <!-- Footer placeholder -->

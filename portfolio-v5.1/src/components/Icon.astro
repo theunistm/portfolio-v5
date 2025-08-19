@@ -1,0 +1,41 @@
+---
+// Icon.astro - Reusable SVG icon component
+// Usage: <Icon name="wave" size="24" />
+
+import { parse } from 'node:path';
+
+export interface Props {
+  name: string;
+  size?: string | number;
+  class?: string;
+}
+
+const { name, size = 24, class: className = '' } = Astro.props;
+
+// Import the SVG as raw content
+let svgContent = "";
+let iconFound = false;
+
+try {
+  // Dynamically import the SVG file
+  const importPath = `../icons/${name}.svg`;
+  const module = await import(importPath + '?raw');
+  svgContent = module.default;
+  iconFound = true;
+} catch (e) {
+  console.error(`Icon '${name}' not found`);
+}
+
+// Style attributes for the wrapper
+const wrapperStyle = `width: ${size}px; height: ${size}px;`;
+---
+
+{iconFound ? (
+  <span 
+    class={`inline-block align-middle ${className}`}
+    style={wrapperStyle}
+    set:html={svgContent}
+  />
+) : (
+  <span class="text-red-500">Icon '{name}' not found</span>
+)}
