@@ -1,29 +1,45 @@
 {
-  "text": "I'm a maker of things based in Windhoek. Right now I'm building an e-commerce app for Nampharm. I believe in cutting through the BS.",
-  "interactiveWords": ["things", "Windhoek", "building", "e-commerce app", "Nampharm", "BS"],
+  "text": "Welcome to my portfolio. Here you'll see what I've built. I make useful software. From Windhoek, I'm shipping an e‑commerce app for Nampharm. Previously at Buddy Industries where we shipped apps. Product designer transitioning to frontend, I create for clarity and cut through the BS.",
+  "interactiveWords": ["built", "useful software", "Windhoek", "e‑commerce app", "Nampharm", "Buddy Industries", "shipped apps", "frontend", "clarity", "BS"],
   "expansions": {
-    "things": {
-      "text": "like sites & apps",
+    "built": {
+      "text": "with pixels and code",
+      "expansions": {}
+    },
+    "useful software": {
+      "text": "that's easy to understand and a joy to use",
       "expansions": {}
     },
     "Windhoek": {
-      "text": "the capital of Namibia",
+      "text": ", the capital of Namibia",
       "expansions": {}
     },
-    "building": {
-      "text": "using pixels & code",
-      "expansions": {}
-    },
-    "e-commerce app": {
-      "text": "along with internal tools",
+    "e‑commerce app": {
+      "text": "plus operations tools & various sites",
       "expansions": {}
     },
     "Nampharm": {
-      "text": ", previously at Buddy Industries",
+      "text": ", Namibia's largest pharmaceutical distributor",
+      "expansions": {}
+    },
+    "Buddy Industries": {
+      "text": "a leading tech start up",
+      "expansions": {}
+    },
+    "shipped apps": {
+      "text": ", such as Namibia's first super app and a P2P payments app",
+      "expansions": {}
+    },
+    "frontend": {
+      "text": ", turning UI into production code",
+      "expansions": {}
+    },
+    "clarity": {
+      "text": "coherent patterns and measurable outcomes",
       "expansions": {}
     },
     "BS": {
-      "text": "by creating actual working solutions",
+      "text": ", which to me, means no self‑aggrandising, yet acknowledge your capability and wins",
       "expansions": {}
     }
   }

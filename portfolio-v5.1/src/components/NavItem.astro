@@ -1,0 +1,39 @@
+---
+// NavItem.astro - Reusable navigation item component with SVG icon support
+export interface Props {
+  href: string;
+  label: string;
+  currentPath: string;
+  iconSvg: string;
+}
+
+const { href, label, currentPath, iconSvg } = Astro.props;
+const isActive = 
+  (currentPath === href) || 
+  (href === '/#work' && currentPath === '/#work') ||
+  (href === '/' && currentPath === '/' && href !== '/#work');
+---
+
+<a 
+  href={href}
+  class="flex items-center gap-2 px-3 py-2 rounded-full transition-all text-[#500F0B] opacity-50 hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[#500F0B] focus-visible:outline-none"
+  aria-current={isActive ? 'page' : undefined}
+  data-section={href === '/#work' ? 'work' : ''}
+  aria-label={label}
+>
+  <span class="icon w-5 h-5" aria-hidden="true" set:html={iconSvg.replace(/fill="[^"]*"/g, 'fill="currentColor"')} />
+  <span class="text-sm font-medium">{label}</span>
+</a>
+
+<style>
+  a[aria-current="page"] {
+    background-color: #500F0B;
+    color: #FBF9F5;
+    border: 1px solid #FBF9F5;
+    opacity: 1;
+  }
+
+  a:hover {
+    opacity: 0.8;
+  }
+</style>

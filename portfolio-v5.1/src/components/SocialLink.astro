@@ -1,0 +1,20 @@
+---
+// SocialLink.astro - Reusable social media link component with SVG icon support
+export interface Props {
+  href: string;
+  label: string;
+  iconSvg: string;
+}
+
+const { href, label, iconSvg } = Astro.props;
+---
+
+<a 
+  href={href}
+  target="_blank" 
+  rel="noopener noreferrer"
+  class="text-[#500F0B] opacity-50 hover:opacity-80 transition-opacity focus-visible:ring-2 focus-visible:ring-[#500F0B] focus-visible:outline-none rounded-full p-1"
+  aria-label={label}
+>
+  <span class="icon w-[18px] h-[18px]" aria-hidden="true" set:html={iconSvg.replace(/fill="[^"]*"/g, 'fill="currentColor"')} />
+</a>
