@@ -42,6 +42,7 @@ const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.g
 
 // Pre-calculate active/inactive color classes
 const activeColor = 'fill-[#FBF9F5]';
+// Use exactly 50% opacity for inactive state to match the work page
 const inactiveColor = 'fill-[#500F0B] opacity-50';
 const hoverColor = 'hover:opacity-80';
 
@@ -55,18 +56,15 @@ const isActive = (itemPath: string) => {
 };
 ---
 
-<nav class="fixed bottom-8 left-8 z-50">
+<nav class="fixed bottom-8 z-50 left-1/2 transform -translate-x-1/2">
   <!-- Single navbar with two groups -->
-  <div class="flex items-center gap-8 rounded-full border border-[#EAE2DE] bg-[#FBF9F5]/50 backdrop-blur-md px-6 py-3">
+  <div class="flex items-center gap-8 rounded-[20px] border border-[#EAE2DE] bg-[#FBF9F5]/50 backdrop-blur-md px-3 py-3">
     <!-- Group 1: Page Navigation -->
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-0">
       <NavItem href="/" label="Home" currentPath={currentPath} iconSvg={HomeIcon} />
       <NavItem href="/#work" label="Work" currentPath={currentPath} iconSvg={WorkIcon} />
       <NavItem href="/explorations" label="Explorations" currentPath={currentPath} iconSvg={ExplorationsIcon} />
     </div>
-
-    <!-- Divider between groups -->
-    <div class="h-6 w-px bg-[#500F0B]/20"></div>
 
     <!-- Group 2: Meta Info and Social Links -->
     <div class="flex items-center gap-6">
@@ -78,28 +76,29 @@ const isActive = (itemPath: string) => {
         <SocialLink href="https://github.com/theunistm" label="GitHub" iconSvg={GitHubIcon} />
       </div>
 
-      <!-- Resume Link -->
-      <a 
-        href="/resume.pdf" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        class="flex items-center gap-2 px-3 py-2 rounded-full border border-[#500F0B]/50 transition-all text-[#500F0B] hover:bg-[#500F0B]/10 focus-visible:ring-2 focus-visible:ring-[#500F0B] focus-visible:outline-none"
-        aria-label="Resume"
-      >
-        <span class="icon w-4 h-4" aria-hidden="true" set:html={ResumeIcon.replace(/fill="[^"]*"/g, 'fill="currentColor"')} />
-        <span class="text-xs font-medium">Resume</span>
-      </a>
-
       <!-- Meta Info -->
-      <div class="flex items-center gap-2 text-xs text-[#500F0B]">
+      <div class="flex items-center gap-2 text-[18px] text-[#500F0B] font-primary nav-font whitespace-nowrap">
         <span>©2025, Theunis Hall</span>
         <span class="opacity-50">•</span>
         <span class="group relative cursor-help">
-          site v5.3
-          <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-[#500F0B] text-[#FBF9F5] rounded-md text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          <span class="underline">site v5.3</span>
+          <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-[#500F0B] text-[#FBF9F5] rounded-md text-[14px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none font-primary nav-font">
             Last updated: {formattedDate} 👨‍💻
           </span>
         </span>
+        <span class="opacity-50">•</span>
+        
+        <!-- Resume Link -->
+        <a 
+          href="/resume.pdf" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="flex items-center gap-2 px-3 py-2 rounded-full transition-all text-[#500F0B] focus-visible:ring-2 focus-visible:ring-[#500F0B] focus-visible:outline-none font-primary nav-font"
+          aria-label="Resume"
+        >
+          <span class="text-[18px] underline">Resume</span>
+          <span class="icon w-4 h-4" aria-hidden="true" set:html={ResumeIcon.replace(/fill="black"/g, 'fill="currentColor"')} />
+        </a>
       </div>
     </div>
   </div>
@@ -107,14 +106,43 @@ const isActive = (itemPath: string) => {
 
 <script>
   // Script for handling active state on scroll between Home and Work sections
+  // and implementing smooth scrolling
   document.addEventListener('DOMContentLoaded', () => {
     const workSection = document.getElementById('work');
+    const homeSection = document.getElementById('home');
     const homeLink = document.querySelector('a[href="/"]');
     const workLink = document.querySelector('a[href="/#work"]');
     
     // With our new component structure, we select the icon span that contains the SVG
     const homeIcon = homeLink?.querySelector('.icon');
     const workIcon = workLink?.querySelector('.icon');
+    
+    // Implement smooth scrolling for Home and Work links
+    if (homeLink && workLink) {
+      // Home link should scroll to top
+      homeLink.addEventListener('click', function(e) {
+        // Only intercept if we're already on the homepage
+        if (window.location.pathname === '/' || window.location.pathname === '') {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        }
+      });
+      
+      // Work link should scroll to work section
+      workLink.addEventListener('click', function(e) {
+        // Only intercept if we're already on the homepage
+        if (window.location.pathname === '/' || window.location.pathname === '') {
+          e.preventDefault();
+          const workSectionElement = document.getElementById('work');
+          if (workSectionElement) {
+            workSectionElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    }
     
     if (workSection && homeLink && workLink && homeIcon && workIcon) {
       // Function to toggle active/inactive state

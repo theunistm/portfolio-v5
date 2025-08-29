@@ -13,8 +13,8 @@ const { href, label, iconSvg } = Astro.props;
   href={href}
   target="_blank" 
   rel="noopener noreferrer"
-  class="text-[#500F0B] opacity-50 hover:opacity-80 transition-opacity focus-visible:ring-2 focus-visible:ring-[#500F0B] focus-visible:outline-none rounded-full p-1"
+  class="flex items-center gap-1 text-[#500F0B]/70 hover:text-[#500F0B] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] rounded p-1 font-primary nav-font"
   aria-label={label}
 >
-  <span class="icon w-[18px] h-[18px]" aria-hidden="true" set:html={iconSvg.replace(/fill="[^"]*"/g, 'fill="currentColor"')} />
+  <span class="icon w-[18px] h-[18px]" aria-hidden="true" set:html={iconSvg.replace(/fill="black"/g, 'fill="currentColor"')} />
 </a>

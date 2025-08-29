@@ -8,8 +8,8 @@ import BioSectionInteractive from "../components/BioSectionInteractive.astro";
   <BackgroundStatic opacity={0.3} isLightBg={true} />
 
   <main class="relative z-10 container-page py-16 md:py-24">
-    <!-- Home/Bio Section -->
-    <section id="home" class="min-h-[90vh] flex flex-col justify-center">
+    <!-- Home/Bio Section - This is our reference anchor -->
+    <section id="home" class="min-h-[90vh] flex flex-col justify-center align-left">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
         <div>
           <h1 class="h1-display flex items-center gap-3">Hi, I'm Theunis <Icon name="wave" size={32} class="text-[#500F0B] mt-1" /></h1>
@@ -30,8 +30,8 @@ import BioSectionInteractive from "../components/BioSectionInteractive.astro";
     </section>
 
     <!-- Work Section -->
-    <section id="work" class="min-h-screen py-32">
-      <div class="max-w-4xl mx-auto">
+    <section id="work" class="min-h-screen py-32 align-left">
+      <div class="max-w-4xl">
         <h2 class="h2-display mb-16">Selected Work</h2>
         
         <!-- Work samples - these are placeholders -->

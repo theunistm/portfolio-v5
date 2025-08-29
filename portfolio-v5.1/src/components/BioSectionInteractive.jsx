@@ -15,7 +15,7 @@ const HighlightedWord = ({ word, expansion, onClick }) => {
     >
       {/* Simple rectangular highlight */}
       <span 
-        className="absolute bg-[#500F0B]/10 pointer-events-none" 
+        className="absolute bg-[#500F0B]/8 pointer-events-none" 
         style={{ 
           height: 'calc(100% - 4px)', 
           width: '100%',
@@ -48,7 +48,7 @@ const ExpandingWord = ({ word, expansion, onAnimationComplete }) => {
         
         {/* Simple expanding highlight that stretches and fades */}
         <motion.span 
-          className="absolute bg-[#500F0B]/10 pointer-events-none" 
+          className="absolute bg-[#500F0B]/8 pointer-events-none" 
           style={{ 
             height: 'calc(100% - 4px)', 
             top: '2px',

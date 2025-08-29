@@ -1,0 +1,21 @@
+/* Custom styles for navigation components */
+
+/* Ensure PP Mondwest font is applied with correct weight */
+.nav-font {
+  font-family: 'PP Mondwest', serif !important;
+  font-weight: 400;
+}
+
+/* Responsive navigation positioning to match alignment system */
+@media (min-width: 768px) {
+  nav.fixed.left-\[var\(--inset-left\)\] {
+    left: var(--inset-left-md) !important;
+  }
+}
+
+/* Force the correct font application with higher specificity */
+a.font-primary, 
+div.font-primary,
+span.font-primary {
+  font-family: 'PP Mondwest', serif !important;
+}

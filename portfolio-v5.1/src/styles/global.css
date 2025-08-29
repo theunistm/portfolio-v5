@@ -6,6 +6,10 @@
   --ink-muted: #7A3A2F;
   --accent: #8E3D32;
   --border: #E3DAD1;
+  
+  /* Left alignment system */
+  --inset-left: 1.5rem; /* matches theme('padding.6') */
+  --inset-left-md: 2rem; /* matches theme('padding.8') */
 }
 
 html, body {
@@ -106,17 +110,35 @@ code, pre {
   font-size: 14px;
 }
 
+/* Left alignment utility */
+.align-left {
+  padding-left: var(--inset-left);
+}
+
+.align-left > * {
+  margin-left: 0; /* prevent double-indent */
+}
+
+@media (min-width: theme('screens.md')) {
+  .align-left {
+    padding-left: var(--inset-left-md);
+  }
+}
+
 /* Container */
 .container-page { 
   max-width: theme('maxWidth.6xl');
   margin-left: auto;
   margin-right: auto;
-  padding-left: theme('padding.6');
   padding-right: theme('padding.6');
+  /* Using our alignment system for left padding */
+  padding-left: var(--inset-left);
 }
+
 @media (min-width: theme('screens.md')) {
   .container-page { 
-    padding-left: theme('padding.8');
     padding-right: theme('padding.8');
+    /* Responsive left alignment */
+    padding-left: var(--inset-left-md);
   }
 }
