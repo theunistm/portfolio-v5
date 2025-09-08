@@ -3,6 +3,11 @@ import Base from "../layouts/Base.astro";
 import BackgroundStatic from "../components/BackgroundStatic.astro";
 import Icon from "../components/Icon.astro";
 import BioSectionInteractive from "../components/BioSectionInteractive.astro";
+
+// Pharmacy icon SVG
+const pharmacyIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm6 11h-3v3h-2v-3H8v-2h3V8h2v5h3v2z"/>
+</svg>`;
 ---
 <Base title="Theunis Hall — Portfolio">
   <BackgroundStatic opacity={0.3} isLightBg={true} />
@@ -29,40 +34,293 @@ import BioSectionInteractive from "../components/BioSectionInteractive.astro";
       </div>
     </section>
 
-    <!-- Work Section -->
+    <!-- Work Section with direct implementation matching the screenshot -->
     <section id="work" class="min-h-screen py-32 align-left">
-      <div class="max-w-4xl">
-        <h2 class="h2-display mb-16">Selected Work</h2>
+      <div class="max-w-7xl">
+        <div class="h2-display mb-16"></div>
         
-        <!-- Work samples - these are placeholders -->
-        <div class="grid grid-cols-1 gap-24">
-          <!-- Work Item 1 -->
-          <div class="border border-[#EAE2DE] rounded-2xl p-8 bg-white/40 backdrop-blur-sm">
-            <h3 class="text-2xl font-medium mb-4">E-commerce Platform for Nampharm</h3>
-            <div class="text-[#500F0B] opacity-80 mb-6">
-              <p>Designed and implemented a complete e-commerce solution for Namibia's largest pharmaceutical distributor, including operations tools and various client-facing sites.</p>
-            </div>
-            <div class="flex flex-wrap gap-3 mb-8">
-              <span class="px-3 py-1 text-sm bg-[#500F0B]/10 text-[#500F0B] rounded-full">UX Design</span>
-              <span class="px-3 py-1 text-sm bg-[#500F0B]/10 text-[#500F0B] rounded-full">React</span>
-              <span class="px-3 py-1 text-sm bg-[#500F0B]/10 text-[#500F0B] rounded-full">Next.js</span>
+        <!-- My Pharmacy Project - Direct Implementation -->
+        <section
+          role="region"
+          aria-labelledby="project-my-pharmacy"
+          class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-16 mb-32"
+          style="--project: #4D8B31"
+        >
+          <div class="project-content">
+            <!-- Project Header -->
+            <header class="flex items-center gap-3 mb-4">
+              <span class="project-icon w-6 h-6 text-[#4D8B31]" set:html={pharmacyIcon} />
+              <h2 id="project-my-pharmacy" class="text-[#4D8B31] text-2xl font-medium">My Pharmacy</h2>
+            </header>
+
+            <!-- Meta information -->
+            <p class="text-[#500F0B]/70 mb-3">
+              e-commerce • personal health • lifestyle • 2023 
+            </p>
+
+            <!-- Project Summary -->
+            <p class="text-[#500F0B] max-w-xl mb-4">
+              My Pharmacy is a multi-tenancy shopping app connecting 12k users with over 200 pharmacies all over Namibia. A first for the country.
+            </p>
+
+            <!-- Case Study Button -->
+            <button 
+              class="text-[#4D8B31] underline hover:text-[#4D8B31]/85 transition-colors mb-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4D8B31] rounded-sm font-normal text-base"
+              id="read-case-study"
+            >
+              Read the concise case study
+            </button>
+
+            <!-- Flows Section -->
+            <div class="flows-section">
+              <h2 class="text-xl font-medium mb-6">Highlighted Flows</h2>
+              
+              <!-- Flow rows -->
+              <div class="space-y-4">
+                <!-- Flow 1 -->
+                <div class="flow-row py-3" role="button" tabindex="0">
+                  <div class="flex items-start gap-4">
+                    <div class="w-32">
+                      <h5 class="text-[#4D8B31] font-medium">Page name</h5>
+                    </div>
+                    <div class="w-44 text-[#500F0B]/70 text-sm">
+                      23 interaction points
+                    </div>
+                    <div class="flex-grow text-sm">
+                      <span class="challenge mr-2" title="Present personalized recommendations without overwhelming new users">Challenge</span>
+                      <span class="arrow" aria-hidden="true" style="color: #4D8B31">
+                        <svg width="12" height="6" viewBox="0 0 16 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M15.3536 4.35355C15.5488 4.15829 15.5488 3.84171 15.3536 3.64645L12.1716 0.464466C11.9763 0.269204 11.6597 0.269204 11.4645 0.464466C11.2692 0.659728 11.2692 0.976311 11.4645 1.17157L14.2929 4L11.4645 6.82843C11.2692 7.02369 11.2692 7.34027 11.4645 7.53553C11.6597 7.7308 11.9763 7.7308 12.1716 7.53553L15.3536 4.35355ZM0 4.5H15V3.5H0V4.5Z" fill="currentColor"/>
+                        </svg>
+                      </span>
+                      <span class="solution ml-2" title="Progressive disclosure of features based on user engagement patterns">Solution</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Flow 2 -->
+                <div class="flow-row py-3" role="button" tabindex="0">
+                  <div class="flex items-start gap-4">
+                    <div class="w-32">
+                      <h5 class="text-[#4D8B31] font-medium">Page name</h5>
+                    </div>
+                    <div class="w-44 text-[#500F0B]/70 text-sm">
+                      17 interaction points
+                    </div>
+                    <div class="flex-grow text-sm">
+                      <span class="challenge mr-2" title="Allow efficient search across thousands of products">Challenge</span>
+                      <span class="arrow" aria-hidden="true" style="color: #4D8B31">
+                        <svg width="12" height="6" viewBox="0 0 16 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M15.3536 4.35355C15.5488 4.15829 15.5488 3.84171 15.3536 3.64645L12.1716 0.464466C11.9763 0.269204 11.6597 0.269204 11.4645 0.464466C11.2692 0.659728 11.2692 0.976311 11.4645 1.17157L14.2929 4L11.4645 6.82843C11.2692 7.02369 11.2692 7.34027 11.4645 7.53553C11.6597 7.7308 11.9763 7.7308 12.1716 7.53553L15.3536 4.35355ZM0 4.5H15V3.5H0V4.5Z" fill="currentColor"/>
+                        </svg>
+                      </span>
+                      <span class="solution ml-2" title="Hybrid search algorithm">Solution</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Flow 3 -->
+                <div class="flow-row py-3" role="button" tabindex="0">
+                  <div class="flex items-start gap-4">
+                    <div class="w-32">
+                      <h5 class="text-[#4D8B31] font-medium">Page name</h5>
+                    </div>
+                    <div class="w-44 text-[#500F0B]/70 text-sm">
+                      14 interaction points
+                    </div>
+                    <div class="flex-grow text-sm">
+                      <span class="challenge mr-2" title="Present complex medical information">Challenge</span>
+                      <span class="arrow" aria-hidden="true" style="color: #4D8B31">
+                        <svg width="12" height="6" viewBox="0 0 16 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M15.3536 4.35355C15.5488 4.15829 15.5488 3.84171 15.3536 3.64645L12.1716 0.464466C11.9763 0.269204 11.6597 0.269204 11.4645 0.464466C11.2692 0.659728 11.2692 0.976311 11.4645 1.17157L14.2929 4L11.4645 6.82843C11.2692 7.02369 11.2692 7.34027 11.4645 7.53553C11.6597 7.7308 11.9763 7.7308 12.1716 7.53553L15.3536 4.35355ZM0 4.5H15V3.5H0V4.5Z" fill="currentColor"/>
+                        </svg>
+                      </span>
+                      <span class="solution ml-2" title="Visual hierarchy with expandable sections">Solution</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Work Item 2 -->
-          <div class="border border-[#EAE2DE] rounded-2xl p-8 bg-white/40 backdrop-blur-sm">
-            <h3 class="text-2xl font-medium mb-4">Namibia's First Super App</h3>
-            <div class="text-[#500F0B] opacity-80 mb-6">
-              <p>Contributed to the design and development of Namibia's first super app at Buddy Industries, providing essential services to thousands of users daily.</p>
+          <!-- Phone Preview (Right Column) -->
+          <div class="phone-preview sticky top-[96px] flex flex-col items-center">
+            <div class="phone-frame relative mx-auto w-[240px] h-[480px] bg-white rounded-[32px] border-[8px] border-[#1A1A1A] shadow-md overflow-hidden">
+              <!-- Notch -->
+              <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[80px] h-[20px] bg-[#1A1A1A] rounded-b-[8px] z-10"></div>
+              
+              <!-- Phone content (using the profile image as placeholder) -->
+              <div class="w-full h-full overflow-hidden bg-white">
+                <img 
+                  src="/images/profile-01.png" 
+                  alt="App screenshot" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
             </div>
-            <div class="flex flex-wrap gap-3 mb-8">
-              <span class="px-3 py-1 text-sm bg-[#500F0B]/10 text-[#500F0B] rounded-full">Product Design</span>
-              <span class="px-3 py-1 text-sm bg-[#500F0B]/10 text-[#500F0B] rounded-full">Flutter</span>
-              <span class="px-3 py-1 text-sm bg-[#500F0B]/10 text-[#500F0B] rounded-full">Firebase</span>
-            </div>
+            
+            <!-- Hover instruction -->
+            <p class="text-center text-sm text-[#500F0B]/60 mt-3">
+              Hover over a page flow
+            </p>
           </div>
-        </div>
+        </section>
       </div>
     </section>
   </main>
 </Base>
+
+<script>
+  // Wait for DOM to be fully loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    // Flow hover interactions
+    const flowRows = document.querySelectorAll('.flow-row');
+    const phonePreview = document.querySelector('.phone-preview img');
+    const previewText = document.querySelector('.phone-preview p');
+    const phoneImages = [
+      '/images/profile-01.png', // Use the same image for each flow for this demo
+    ];
+    
+    // Set the first flow as active by default
+    if (flowRows.length > 0) {
+      flowRows[0].classList.add('is-active');
+    }
+    
+    // Add hover and focus effects to flow rows
+    flowRows.forEach((row, index) => {
+      // Handle hover
+      row.addEventListener('mouseenter', () => {
+        // Remove active class from all rows
+        flowRows.forEach(r => r.classList.remove('is-active'));
+        // Add active class to current row
+        row.classList.add('is-active');
+        
+        // Update phone preview
+        if (phonePreview) {
+          // Create a cross-fade effect
+          phonePreview.style.opacity = '0';
+          setTimeout(() => {
+            // Use the same image for all flows in this demo
+            // In a real app, you would use different images/videos for each flow
+            phonePreview.style.opacity = '1';
+            
+            // Update preview text
+            if (previewText) {
+              previewText.textContent = `Hover over a page flow`;
+            }
+          }, 200);
+        }
+      });
+      
+      // Handle keyboard focus
+      row.addEventListener('focus', () => {
+        // Same behavior as hover
+        flowRows.forEach(r => r.classList.remove('is-active'));
+        row.classList.add('is-active');
+        
+        if (phonePreview) {
+          phonePreview.style.opacity = '0';
+          setTimeout(() => {
+            phonePreview.style.opacity = '1';
+          }, 200);
+        }
+      });
+    });
+    
+    // Case study modal functionality
+    const modalButton = document.getElementById('read-case-study');
+    const modalOverlay = document.createElement('div');
+    
+    modalOverlay.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#000000]/40 backdrop-blur-sm overflow-y-auto hidden';
+    modalOverlay.setAttribute('role', 'presentation');
+    modalOverlay.innerHTML = `
+      <div class="bg-[#FBF9F5] rounded-lg shadow-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto border border-[#EAE2DE]" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-content p-6">
+          <div class="modal-header flex justify-between items-center mb-6">
+            <h2 id="modal-title" class="text-xl font-medium" style="color: #4D8B31">My Pharmacy</h2>
+            <button class="close-modal text-[#500F0B]/70 hover:text-[#500F0B] rounded-full p-1 transition-colors focus:outline-none focus-visible:ring-2" aria-label="Close modal">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="modal-body prose prose-sm max-w-none prose-headings:text-[#500F0B] prose-headings:font-normal prose-p:text-[#500F0B]">
+            <h2>Project Background</h2>
+            <p>My Pharmacy was developed to meet the growing demand for accessible pharmaceutical services in Namibia, especially in remote areas where physical pharmacies are limited.</p>
+            
+            <h2>Challenges</h2>
+            <p>The main challenges included creating a user-friendly interface for both customers and pharmacists, ensuring secure handling of sensitive medical information, and building a reliable delivery system across diverse geographical locations.</p>
+            
+            <h2>Solution</h2>
+            <p>We designed a comprehensive platform that allows users to:</p>
+            <ul>
+              <li>Browse medications by category or search by name</li>
+              <li>Upload prescriptions securely</li>
+              <li>Consult with pharmacists through in-app messaging</li>
+              <li>Schedule deliveries or pickups</li>
+            </ul>
+            
+            <h2>Results</h2>
+            <p>Since launch, the app has connected over 12,000 users with 200+ pharmacies nationwide, processed 45,000+ orders, and received a satisfaction rating of 4.8/5 from users.</p>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(modalOverlay);
+    
+    const closeModal = () => {
+      modalOverlay.classList.add('hidden');
+      document.body.style.overflow = '';
+    };
+    
+    // Open modal on button click
+    if (modalButton) {
+      modalButton.addEventListener('click', () => {
+        modalOverlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling while modal is open
+        
+        // Focus the close button for accessibility
+        const closeButton = modalOverlay.querySelector('.close-modal');
+        if (closeButton) {
+          setTimeout(() => {
+            closeButton.focus();
+          }, 100);
+        }
+      });
+    }
+    
+    // Close modal on button click
+    const closeButton = modalOverlay.querySelector('.close-modal');
+    if (closeButton) {
+      closeButton.addEventListener('click', closeModal);
+    }
+    
+    // Close modal on overlay click
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        closeModal();
+      }
+    });
+    
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modalOverlay.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Active flow row styling */
+  .flow-row.is-active h5 {
+    font-weight: 600;
+  }
+  
+  /* Transition for phone preview images */
+  .phone-preview img {
+    transition: opacity 0.2s ease-in-out;
+  }
+</style>

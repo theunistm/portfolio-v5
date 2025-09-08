@@ -1,0 +1,105 @@
+---
+// ProjectEntry.astro - Reusable component for project showcase
+// Handles structure, semantics, and theming for project entries
+import FlowsList from './FlowsList';
+import PhonePreview from './PhonePreview';
+import CaseStudyModal from './CaseStudyModal';
+import type { ProjectProps } from './types';
+
+const { 
+  title,
+  icon,
+  categories,
+  duration,
+  summary,
+  caseStudy,
+  theme,
+  flows
+} = Astro.props as ProjectProps;
+
+// Format duration text
+let durationText = `${duration.start}`;
+if (duration.ongoing) {
+  durationText += " – ongoing";
+} else if (duration.end) {
+  durationText += ` – ${duration.end}`;
+}
+
+// Generate unique IDs for accessibility
+const projectId = `project-${title.toLowerCase().replace(/\s+/g, '-')}`;
+const modalId = `case-study-${title.toLowerCase().replace(/\s+/g, '-')}`;
+
+// Format categories as string
+const categoriesText = categories.join(' • ');
+---
+
+<section 
+  role="region"
+  aria-labelledby={projectId}
+  class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-16 mb-32"
+  style={`--project: ${theme.color}`}
+>
+  <div class="project-content">
+    <!-- Project Header -->
+    <header class="flex items-center gap-3 mb-4">
+      <span class="project-icon w-6 h-6 text-[color:var(--project)]" set:html={icon} />
+      <h2 id={projectId} class="text-[color:var(--project)] text-2xl font-medium">{title}</h2>
+    </header>
+
+    <!-- Meta information -->
+    <p class="text-[#500F0B]/70 mb-3">
+      {categoriesText} • {durationText}
+    </p>
+
+    <!-- Project Summary -->
+    <p class="text-[#500F0B] max-w-xl mb-4">
+      {summary}
+    </p>
+
+    <!-- Case Study Button -->
+    <button 
+      class="text-[color:var(--project)] underline hover:text-[color:oklch(from_var(--project)_l_c_h/0.85)] transition-colors mb-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--project)] rounded-sm font-normal text-base"
+      data-modal-target={modalId}
+    >
+      Read the concise case study
+    </button>
+
+    <!-- Flows Section -->
+    <div class="flows-section">
+      <h2 class="text-xl font-medium mb-6">Highlighted Flows</h2>
+      
+      <!-- FlowsList Component (React) -->
+      <div class="space-y-4">
+        <FlowsList 
+          client:load 
+          flows={flows} 
+          projectColor={theme.color}
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Phone Preview (Right Column) -->
+  <div class="phone-preview-container">
+    <PhonePreview 
+      client:load 
+      flows={flows}
+    />
+  </div>
+
+  <!-- Case Study Modal -->
+  <CaseStudyModal 
+    client:idle
+    id={modalId}
+    title={title}
+    content={caseStudy}
+    projectColor={theme.color}
+  />
+</section>
+
+<style>
+  /* Project-specific theming with CSS variables */
+  .project-icon :global(svg) {
+    fill: var(--project);
+  }
+</style>
