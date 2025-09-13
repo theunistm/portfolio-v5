@@ -8,7 +8,7 @@ import bioData from '../data/bio.json';
 const HighlightedWord = ({ word, expansion, onClick }) => {
   return (
     <motion.span 
-      className="relative inline-block cursor-pointer"
+      className="relative inline cursor-pointer"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       onClick={onClick}
@@ -43,7 +43,7 @@ const ExpandingWord = ({ word, expansion, onAnimationComplete }) => {
   return (
     <>
       {/* Original word with highlight animation */}
-      <span className="relative inline-block">
+      <span className="relative inline">
         {word}
         
         {/* Simple expanding highlight that stretches and fades */}

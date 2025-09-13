@@ -37,22 +37,22 @@ const categoriesText = categories.join(' • ');
   role="region"
   aria-labelledby={projectId}
   class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-16 mb-32"
-  style={`--project: ${theme.color}`}
+  style={`--project: ${theme.color}; font-family: 'PP Mondwest', serif`}
 >
   <div class="project-content">
     <!-- Project Header -->
-    <header class="flex items-center gap-3 mb-4">
-      <span class="project-icon w-6 h-6 text-[color:var(--project)]" set:html={icon} />
+    <header class="flex items-baseline gap-3 mb-4">
+      <span class="project-icon w-8 h-8 text-[color:var(--project)] relative -top-[3px] inline-block align-middle" set:html={icon} />
       <h2 id={projectId} class="text-[color:var(--project)] text-2xl font-medium">{title}</h2>
     </header>
 
     <!-- Meta information -->
-    <p class="text-[#500F0B]/70 mb-3">
+    <p class="text-[#395C06] mb-3">
       {categoriesText} • {durationText}
     </p>
 
     <!-- Project Summary -->
-    <p class="text-[#500F0B] max-w-xl mb-4">
+    <p class="text-[#395C06] max-w-xl mb-4">
       {summary}
     </p>
 
@@ -66,7 +66,7 @@ const categoriesText = categories.join(' • ');
 
     <!-- Flows Section -->
     <div class="flows-section">
-      <h2 class="text-xl font-medium mb-6">Highlighted Flows</h2>
+      <h2 class="text-xl font-medium mb-6 text-[#395C06]">Highlighted Flows</h2>
       
       <!-- FlowsList Component (React) -->
       <div class="space-y-4">
@@ -101,5 +101,11 @@ const categoriesText = categories.join(' • ');
   /* Project-specific theming with CSS variables */
   .project-icon :global(svg) {
     fill: var(--project);
+    display: block; /* remove baseline gap */
+    width: 100% !important;
+    height: 100% !important;
+    vertical-align: middle;
+    position: relative;
+    top: -2px; /* nudge the glyph up inside its box */
   }
 </style>

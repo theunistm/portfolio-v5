@@ -1,10 +1,6 @@
 // Sample project data for the work section
 import type { ProjectProps } from '../components/work/types';
-
-// Pharmacy icon SVG
-const pharmacyIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-  <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm6 11h-3v3h-2v-3H8v-2h3V8h2v5h3v2z"/>
-</svg>`;
+import pharmacyIcon from '../../public/images/prj-app-icon-mypharm.svg?raw';
 
 // Sample project data
 export const projects: ProjectProps[] = [
@@ -37,7 +33,7 @@ export const projects: ProjectProps[] = [
       <p>Since launch, the app has connected over 12,000 users with 200+ pharmacies nationwide, processed 45,000+ orders, and received a satisfaction rating of 4.8/5 from users.</p>
     `,
     theme: {
-      color: "#4D8B31" // Green color as shown in the screenshot
+      color: "#395C06" // Updated project color
     },
     flows: [
       {

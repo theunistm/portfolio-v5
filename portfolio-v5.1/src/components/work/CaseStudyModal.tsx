@@ -126,7 +126,7 @@ export default function CaseStudyModal({
         aria-modal="true"
         aria-labelledby={`modal-title-${id}`}
       >
-        <div className="modal-content p-6">
+        <div className="modal-content p-6" style={{ fontFamily: "'PP Mondwest', serif" }}>
           {/* Header with close button */}
           <div className="modal-header flex justify-between items-center mb-6">
             <h2 
@@ -138,7 +138,7 @@ export default function CaseStudyModal({
             </h2>
             <button
               ref={closeButtonRef}
-              className="text-[#500F0B]/70 hover:text-[#500F0B] rounded-full p-1 transition-colors focus:outline-none focus-visible:ring-2"
+              className="text-[#395C06] hover:text-[#395C06] rounded-full p-1 transition-colors focus:outline-none focus-visible:ring-2"
               style={{ '--ring-color': projectColor } as React.CSSProperties}
               aria-label="Close modal"
               onClick={closeModal}
@@ -151,7 +151,7 @@ export default function CaseStudyModal({
           
           {/* Modal content */}
           <div 
-            className="modal-body prose prose-sm max-w-none prose-headings:text-[#500F0B] prose-headings:font-normal prose-p:text-[#500F0B] prose-a:text-[color:var(--project)] prose-a:no-underline hover:prose-a:underline"
+            className="modal-body prose prose-sm max-w-none prose-headings:text-[#395C06] prose-headings:font-normal prose-p:text-[#395C06] prose-a:text-[color:var(--project)] prose-a:no-underline hover:prose-a:underline"
             style={{ ['--project' as string]: projectColor }}
             dangerouslySetInnerHTML={{ __html: content }}
           />

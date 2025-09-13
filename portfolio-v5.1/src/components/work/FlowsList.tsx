@@ -59,52 +59,62 @@ export default function FlowsList({ flows, projectColor }: FlowsListProps) {
         <div
           key={`flow-${index}`}
           ref={(el) => { flowRefs.current[index] = el; }}
-          className={`flow-row py-3 ${activeIndex === index ? 'is-active' : ''}`}
-          role="button"
+          className={`flow-row group py-2 text-[#395C06]`}
+          role="presentation"
           tabIndex={0}
-          aria-pressed={activeIndex === index}
           onClick={() => {
-            setActiveIndex(index);
-            updatePreview(index);
+            // No click behavior; not interactive, preview updates only on hover/focus
           }}
           onMouseEnter={() => {
-            setActiveIndex(index);
             updatePreview(index);
           }}
           onKeyDown={(e) => handleKeyDown(e, index)}
-          style={{
-            color: activeIndex === index ? projectColor : 'inherit'
-          }}
         >
-          <div className="flex items-start gap-4">
+          <div className="inline-flex items-center gap-3 group-hover:bg-[#DFE7DB] transition-colors">
             {/* Page name */}
             <div className="w-32">
-              <h5 className="text-[color:var(--project)] font-medium" style={{ color: projectColor }}>
+              <h5 className="text-[#395C06] font-medium">
                 {flow.page}
               </h5>
             </div>
             
-            {/* Interaction points */}
-            <div className="w-44 text-[#500F0B]/70 text-sm">
+            {/* Interaction points - Hidden for now, can be re-enabled in future */}
+            {/* <div className="w-44 text-[#500F0B]/70 text-sm">
               {flow.interactions}
-            </div>
+            </div> */}
             
-            {/* Challenge */}
-            <div className="flex-grow text-sm">
-              <span className="challenge mr-2" title={flow.challenge}>Challenge</span>
-              
-              {/* Arrow icon - purely decorative */}
-              <span 
-                className="arrow" 
-                aria-hidden="true"
-                style={{ color: projectColor }}
-              >
-                <svg width="12" height="6" viewBox="0 0 16 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15.3536 4.35355C15.5488 4.15829 15.5488 3.84171 15.3536 3.64645L12.1716 0.464466C11.9763 0.269204 11.6597 0.269204 11.4645 0.464466C11.2692 0.659728 11.2692 0.976311 11.4645 1.17157L14.2929 4L11.4645 6.82843C11.2692 7.02369 11.2692 7.34027 11.4645 7.53553C11.6597 7.7308 11.9763 7.7308 12.1716 7.53553L15.3536 4.35355ZM0 4.5H15V3.5H0V4.5Z" fill="currentColor"/>
-                </svg>
-              </span>
-              
-              <span className="solution ml-2" title={flow.solution}>Solution</span>
+            {/* Challenge and Solution */}
+            <div className="text-lg text-[#395C06]">
+              <div className="flex items-center whitespace-nowrap">
+                <span
+                  className="challenge tip underline decoration-current decoration-1 underline-offset-[3px] mr-2 relative cursor-default"
+                  aria-label={flow.challenge}
+                  data-tip={flow.challenge}
+                >
+                  Challenge
+                </span>
+                
+                {/* Custom Arrow icon - purely decorative */}
+                <span 
+                  className="arrow mx-1 flex-shrink-0" 
+                  aria-hidden="true"
+                >
+                  <img 
+                    src="/images/arrow-icon.svg?v=2" 
+                    alt="" 
+                    width="24" 
+                    height="12"
+                  />
+                </span>
+                
+                <span
+                  className="solution tip underline decoration-current decoration-1 underline-offset-[3px] ml-2 relative cursor-default"
+                  aria-label={flow.solution}
+                  data-tip={flow.solution}
+                >
+                  Solution
+                </span>
+              </div>
             </div>
           </div>
         </div>

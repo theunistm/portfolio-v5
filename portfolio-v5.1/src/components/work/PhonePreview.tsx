@@ -78,7 +78,7 @@ export default function PhonePreview({ flows }: PhonePreviewProps) {
       </div>
       
       {/* Hover instruction */}
-      <p className="text-center text-sm text-[#500F0B]/60 mt-3">
+      <p className="text-center text-sm text-[#395C06] mt-3">
         Hover over a page flow
       </p>
     </div>
