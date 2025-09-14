@@ -77,7 +77,7 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
               <div class="space-y-2">
                 <!-- Flow 1 -->
                 <div class="flow-row group py-2" role="presentation" tabindex="0" data-video="/flows/videos/buddy-ask-buddy.mp4">
-                  <div class="inline-flex items-center gap-3 group-hover:bg-[#DFE7DB] transition-colors">
+                  <div class="flow-hover-target inline-flex items-center gap-3 hover:bg-[#DFE7DB] transition-colors" tabindex="0">
                     <div class="w-32">
                       <h5 class="text-[#395C06] font-medium">Page name</h5>
                     </div>
@@ -104,7 +104,7 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
 
                 <!-- Flow 2 -->
                 <div class="flow-row group py-2" role="presentation" tabindex="0">
-                  <div class="inline-flex items-center gap-4 group-hover:bg-[#DFE7DB] transition-colors">
+                  <div class="flow-hover-target inline-flex items-center gap-4 hover:bg-[#DFE7DB] transition-colors" tabindex="0">
                     <div class="w-32">
                       <h5 class="text-[#395C06] font-medium">Page name</h5>
                     </div>
@@ -131,7 +131,7 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
 
                 <!-- Flow 3 -->
                 <div class="flow-row group py-2" role="presentation" tabindex="0">
-                  <div class="inline-flex items-center gap-4 group-hover:bg-[#DFE7DB] transition-colors">
+                  <div class="flow-hover-target inline-flex items-center gap-4 hover:bg-[#DFE7DB] transition-colors" tabindex="0">
                     <div class="w-32">
                       <h5 class="text-[#395C06] font-medium">Page name</h5>
                     </div>
@@ -187,7 +187,7 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
   // Wait for DOM to be fully loaded
   document.addEventListener('DOMContentLoaded', () => {
     // Flow hover interactions
-    const flowRows = document.querySelectorAll('.flow-row');
+    const hoverTargets = document.querySelectorAll('.flow-hover-target');
     const flowImage = document.getElementById('flow-image');
     const flowVideo = document.getElementById('flow-video');
     const emptyState = document.getElementById('empty-state');
@@ -277,29 +277,31 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
     // Demo: use one test image for all flows for now
     const demoImage = '/placeholder-phone-1.jpg';
 
-    flowRows.forEach((row) => {
-      row.addEventListener('mouseenter', () => {
-        const vid = row.dataset?.video;
-        const img = row.dataset?.image || demoImage;
+    hoverTargets.forEach((target) => {
+      target.addEventListener('mouseenter', () => {
+        const row = target.closest('.flow-row');
+        const vid = row?.dataset?.video;
+        const img = row?.dataset?.image || demoImage;
         if (vid) {
           showVideo(vid);
         } else {
           showImage(img);
         }
       });
-      row.addEventListener('mouseleave', () => {
+      target.addEventListener('mouseleave', () => {
         restoreEmpty();
       });
-      row.addEventListener('focus', () => {
-        const vid = row.dataset?.video;
-        const img = row.dataset?.image || demoImage;
+      target.addEventListener('focus', () => {
+        const row = target.closest('.flow-row');
+        const vid = row?.dataset?.video;
+        const img = row?.dataset?.image || demoImage;
         if (vid) {
           showVideo(vid);
         } else {
           showImage(img);
         }
       });
-      row.addEventListener('blur', () => {
+      target.addEventListener('blur', () => {
         restoreEmpty();
       });
     });
@@ -313,7 +315,7 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
 
     overlay.innerHTML = `
       <div class="case-backdrop absolute inset-0 bg-black/30"></div>
-      <aside class="case-panel absolute right-0 top-0 h-full w-full max-w-[560px] bg-[#FBF9F5] border-l border-[#EAE2DE] shadow-xl translate-x-full transition-transform duration-300 ease-out flex flex-col" aria-labelledby="case-title">
+      <aside class="case-panel absolute right-5 top-5 bottom-5 w-full max-w-[560px] bg-[#FBF9F5] border border-[#EAE2DE] rounded-[32px] shadow-xl translate-x-full transition-transform duration-300 ease-out flex flex-col" aria-labelledby="case-title">
         <header class="relative px-5 py-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <button class="case-close p-1 rounded focus:outline-none focus-visible:ring-2" aria-label="Close case study">
@@ -361,6 +363,10 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
 
     const openPanel = () => {
       overlay.classList.remove('hidden');
+      // ensure backdrop is available for fade-in
+      if (backdrop) backdrop.classList.remove('hidden');
+      // mark as open so the backdrop can fade in
+      overlay.classList.add('is-open');
       document.body.classList.add('modal-open');
       // allow layout, then slide
       requestAnimationFrame(() => {
@@ -368,10 +374,17 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
       });
     };
     const closePanel = () => {
+      // Start background de-blur immediately
+      document.body.classList.remove('modal-open');
+      // Immediately dismiss the scrim only; keep overlay so the panel can animate out
+      overlay.classList.remove('is-open');
+      if (backdrop) backdrop.classList.add('hidden');
+      // Slide panel out
       panel.classList.add('translate-x-full');
+      // After slide-out completes, hide the overlay and reset backdrop for next open
       setTimeout(() => {
         overlay.classList.add('hidden');
-        document.body.classList.remove('modal-open');
+        if (backdrop) backdrop.classList.remove('hidden');
       }, 300);
     };
 
@@ -453,9 +466,20 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
     opacity: 1;
   }
 
-  /* Blur the main page content when modal is open */
+  /* Smooth blur transition for background when modal opens/closes */
+  .page-blur {
+    transition: filter 180ms ease;
+  }
   body.modal-open .page-blur {
     filter: blur(8px);
-    transition: filter 180ms ease;
+  }
+
+  /* Fade the scrim (backdrop) in/out with the modal open state */
+  .case-overlay .case-backdrop {
+    opacity: 0;
+    transition: opacity 360ms ease;
+  }
+  .case-overlay.is-open .case-backdrop {
+    opacity: 1;
   }
 </style>
