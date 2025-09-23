@@ -4,8 +4,17 @@ import "../styles/fonts.css";
 import "../styles/navigation.css";
 import Navigation from "../components/Navigation.astro";
 
-const { title = "Theunis Hall — Portfolio", description = "Builder" } = Astro.props;
+const {
+  title = "Product designer — Theunis",
+  description = "Portfolio of Theunis: systems‑led product design with hands‑on UI implementation. Clear, fast, accessible experiences across e‑commerce, fintech, and tools.",
+  ogImage = "/og/default.png",
+  ogImageAlt = "Theunis Hall — Designer & Builder. Portrait at the beach beside site title on a deep red background.",
+  siteName = "Theunis Hall",
+  twitterHandle = "@TheunisTheMaker"
+} = Astro.props;
 const currentPath = Astro.url.pathname;
+const canonical = Astro.site ? new URL(currentPath, Astro.site).toString() : currentPath;
+const ogType = "website";
 ---
 <!doctype html>
 <html lang="en">
@@ -14,10 +23,66 @@ const currentPath = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Open Graph -->
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    {twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
+    {twitterHandle && <meta name="twitter:creator" content={twitterHandle} />}
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <!-- Mark JS-enabled early so CSS can provide a no-JS fallback -->
+    <script>document.documentElement.classList.add('js');</script>
+    <!-- Critical inline CSS to ensure first paint starts hidden and can fade in -->
+    <style>
+      /* Keep tiny and scoped: mirrors rules in global.css */
+      body.page-fade-init { opacity: 0; }
+      body { transition: opacity 360ms ease; }
+      @media (prefers-reduced-motion: reduce) { body { transition: none; } }
+    </style>
+    <noscript>
+      <style>body.page-fade-init{opacity:1 !important}</style>
+    </noscript>
+    <!-- Preload custom cursor assets -->
+    <link rel="preload" as="image" href="/cursors/cursor-default.svg" />
+    <link rel="preload" as="image" href="/cursors/cursor-click.svg" />
+    <link rel="preload" as="image" href="/cursors/cursor-external.svg" />
   </head>
-  <body class="min-h-dvh">
+  <body class="min-h-dvh page-fade-init">
     <slot />
     <Navigation currentPath={currentPath} />
+    <!-- Custom cursor element -->
+    <div id="custom-cursor" class="custom-cursor" aria-hidden="true"></div>
+    <!-- Page fade-in on first load -->
+    <script>
+      // Prefer DOMContentLoaded so the fade happens as soon as the DOM is ready.
+      (function(){
+        const activate = () => {
+          // Force a reflow so the browser registers the initial opacity:0
+          void document.body.offsetWidth;
+          // Next frame, toggle classes to trigger the transition
+          requestAnimationFrame(() => {
+            document.body.classList.add('page-fade-ready');
+            document.body.classList.remove('page-fade-init');
+          });
+        };
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', activate, { once: true });
+        } else {
+          activate();
+        }
+      })();
+    </script>
     
     <script>
       // Alignment checker script
@@ -97,6 +162,147 @@ const currentPath = Astro.url.pathname;
           timeout = setTimeout(later, wait);
         };
       }
+    </script>
+    <script>
+      // Custom Cursor Script
+      (function () {
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const cursorEl = document.getElementById('custom-cursor');
+        if (!cursorEl) return;
+
+        // Enable custom cursor (apply to both body and html to avoid edge cases)
+        document.body.classList.add('use-custom-cursor');
+        document.documentElement.classList.add('use-custom-cursor');
+
+        let mouseX = 0, mouseY = 0;
+        let rafId = null;
+
+        const move = (x, y) => {
+          // Keep CSS transform translate(-50%, -50%) for centering; only update position
+          cursorEl.style.left = x + 'px';
+          cursorEl.style.top = y + 'px';
+        };
+
+        const onMouseMove = (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          // Ensure visible as soon as we move inside the window
+          cursorEl.classList.remove('is-hidden');
+          if (prefersReduced) {
+            move(mouseX, mouseY);
+            return;
+          }
+          if (rafId) return;
+          rafId = requestAnimationFrame(() => {
+            move(mouseX, mouseY);
+            rafId = null;
+          });
+        };
+
+        const isExternalLink = (a) => {
+          if (!a || a.tagName !== 'A') return false;
+          const href = a.getAttribute('href') || '';
+          if (!href || href.startsWith('#')) return false;
+          if (a.target === '_blank') return true;
+          if ((a.rel || '').toLowerCase().includes('external')) return true;
+          try {
+            const url = new URL(href, window.location.origin);
+            return url.hostname !== window.location.hostname;
+          } catch { return false; }
+        };
+
+        const findAnchor = (el) => {
+          while (el && el !== document.body) {
+            if (el.tagName === 'A') return el;
+            el = el.parentElement;
+          }
+          return null;
+        };
+
+        const interactiveSelector = 'a, button, [role="button"], input[type="button"], input[type="submit"], .cursor-pointer';
+
+        const onPointerOver = (e) => {
+          const a = findAnchor(e.target);
+          const interactive = e.target.closest ? e.target.closest(interactiveSelector) : null;
+          if (a && isExternalLink(a)) {
+            cursorEl.classList.add('is-external');
+            cursorEl.classList.remove('is-clicking');
+            return;
+          }
+          if (interactive) {
+            cursorEl.classList.add('is-clicking');
+            cursorEl.classList.remove('is-external');
+          }
+        };
+        const onPointerOut = (e) => {
+          const toEl = e.relatedTarget;
+          const stillInInteractive = !!(toEl && toEl.closest && toEl.closest(interactiveSelector));
+          const toAnchor = toEl && findAnchor(toEl);
+          if (toAnchor && isExternalLink(toAnchor)) {
+            // Moving to another external link keeps external state
+            cursorEl.classList.add('is-external');
+            cursorEl.classList.remove('is-clicking');
+            return;
+          }
+          if (!stillInInteractive) {
+            cursorEl.classList.remove('is-clicking');
+            cursorEl.classList.remove('is-external');
+          }
+        };
+
+        // Toggle visibility when truly entering/leaving the viewport
+        // Some browsers fire mouseout at the edges while still inside the page; use coordinates to guard.
+        const leftViewport = (evt) => (
+          evt.clientX <= 0 ||
+          evt.clientY <= 0 ||
+          evt.clientX >= window.innerWidth - 1 ||
+          evt.clientY >= window.innerHeight - 1
+        );
+
+        const onDocMouseOver = (e) => {
+          // If coming from outside the window (no relatedTarget) OR coordinates are inside, ensure visible
+          if (!e.relatedTarget || !leftViewport(e)) {
+            cursorEl.classList.remove('is-hidden');
+          }
+        };
+        const onDocMouseOut = (e) => {
+          // Hide only if pointer actually left the viewport
+          if (!e.relatedTarget && leftViewport(e)) {
+            cursorEl.classList.add('is-hidden');
+          }
+        };
+
+        window.addEventListener('mousemove', onMouseMove, { passive: true });
+        window.addEventListener('mouseover', onPointerOver, { passive: true });
+        window.addEventListener('mouseout', onPointerOut, { passive: true });
+        document.addEventListener('mouseover', onDocMouseOver, { passive: true });
+        document.addEventListener('mouseout', onDocMouseOut, { passive: true });
+
+        // Initial position off-screen until moved
+        cursorEl.classList.add('is-hidden');
+
+        // Preload cursor assets and log if any fail to load
+        const assets = [
+          '/cursors/cursor-default.svg',
+          '/cursors/cursor-click.svg',
+          '/cursors/cursor-external.svg'
+        ];
+        assets.forEach((src) => {
+          const img = new Image();
+          img.onload = () => {/* ok */};
+          img.onerror = () => console.warn('[cursor] Failed to load asset:', src);
+          img.src = src;
+        });
+
+        // Cleanup on page hide (Astro islands/navigation safety)
+        window.addEventListener('pagehide', () => {
+          window.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseover', onDocMouseOver);
+          document.removeEventListener('mouseout', onDocMouseOut);
+          window.removeEventListener('mouseover', onPointerOver);
+          window.removeEventListener('mouseout', onPointerOut);
+        });
+      })();
     </script>
   </body>
 </html>
