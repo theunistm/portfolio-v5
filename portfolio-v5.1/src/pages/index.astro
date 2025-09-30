@@ -4,6 +4,7 @@ import BackgroundStatic from "../components/BackgroundStatic.astro";
 import Icon from "../components/Icon.astro";
 import BioSectionInteractive from "../components/BioSectionInteractive.astro";
 import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
+import MyStack from "../components/MyStack.astro";
 
 ---
 <Base title="Theunis Hall — Portfolio">
@@ -11,7 +12,7 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
 
   <main class="relative z-10 container-page py-16 md:py-24 page-blur">
     <!-- Home/Bio Section - This is our reference anchor -->
-    <section id="home" class="min-h-[90vh] flex flex-col justify-center align-left">
+    <section id="home" class="relative min-h-[90vh] flex flex-col justify-center align-left">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
         <div>
           <h1 class="h1-display flex items-center gap-3">Hi, I'm Theunis <Icon name="wave" size={32} class="text-[#500F0B] mt-1" /></h1>
@@ -28,6 +29,10 @@ import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
             height="657"
           />
         </div>
+      </div>
+      <!-- My Stack pill anchored to the lower-left of the hero -->
+      <div class="absolute left-[var(--inset-left)] bottom-[99px] md:bottom-[107px]">
+        <MyStack />
       </div>
     </section>
 

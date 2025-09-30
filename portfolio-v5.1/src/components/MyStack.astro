@@ -1,0 +1,84 @@
+---
+export interface Props {
+  title?: string;
+  className?: string;
+}
+const { title = "My stack", className = "" } = Astro.props as Props;
+---
+<div class={`my-stack group select-none ${className}`.trim()} aria-label="My stack" role="presentation">
+  <span class="label h5">{title}</span>
+  <div class="icons" aria-hidden="true">
+    <span class="icon i1"></span>
+    <span class="icon i2"></span>
+    <span class="icon i3"></span>
+    <span class="icon i4"></span>
+  </div>
+</div>
+
+<style>
+  .my-stack {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px;
+    border: 1px solid #A77E75;
+    background: transparent;
+    color: #500F0B;
+    border-radius: 20px;
+  }
+
+  .my-stack .label {
+    font-family: 'PP Mondwest', serif;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .icons {
+    position: relative;
+    height: 44px;
+    width: calc(44px + 3 * 18px); /* base + three overlaps (4 icons) */
+    transition: width 240ms ease;
+  }
+
+  /* Base icon shape (placeholder). Replace background with images later if desired */
+  .icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-sizing: border-box;
+    transform-origin: 50% 50%;
+    transition: transform 240ms ease, left 240ms ease;
+    will-change: transform, left;
+  }
+
+  /* Stacked with slight overlaps and subtle random rotation */
+  .icon.i1 { left: 0px;   transform: rotate(-6deg); background-image: url('/images/stack/01-stack-windsurf.svg'); }
+  .icon.i2 { left: 18px;  transform: rotate(3deg);  background-image: url('/images/stack/02-stack-figma.svg'); }
+  .icon.i3 { left: 36px;  transform: rotate(-2deg); background-image: url('/images/stack/03-stack-play.svg'); }
+  .icon.i4 { left: 54px;  transform: rotate(5deg);  background-image: url('/images/stack/04-stack-blender.svg'); }
+
+  /* On hover, unfurl horizontally and reset rotation to 0 */
+  .group:hover .icons,
+  .group:focus-within .icons { width: 200px; }
+  .group:hover .icon.i1,
+  .group:focus-within .icon.i1 { left: 0px;  transform: rotate(0deg); transition-delay: 120ms; }
+  .group:hover .icon.i2,
+  .group:focus-within .icon.i2 { left: 52px; transform: rotate(0deg); transition-delay: 80ms; }
+  .group:hover .icon.i3,
+  .group:focus-within .icon.i3 { left: 104px; transform: rotate(0deg); transition-delay: 40ms; }
+  .group:hover .icon.i4,
+  .group:focus-within .icon.i4 { left: 156px; transform: rotate(0deg); transition-delay: 0ms; }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .icon { transition: none; }
+  }
+</style>
