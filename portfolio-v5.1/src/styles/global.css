@@ -229,3 +229,18 @@ body.page-fade-ready {
     transition: none;
   }
 }
+
+/* ------------------------------------------------------------
+   Modal state: Hide navigation when modal is open
+   ------------------------------------------------------------ */
+body.modal-open nav {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+/* Also hide the blur effect from navigation */
+body.modal-open .page-blur {
+  filter: blur(8px);
+  transition: filter 180ms ease;
+}

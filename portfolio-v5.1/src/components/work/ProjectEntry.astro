@@ -14,7 +14,9 @@ const {
   summary,
   caseStudy,
   theme,
-  flows
+  flows,
+  downloadLink,
+  stage
 } = Astro.props as ProjectProps;
 
 // Format duration text
@@ -28,9 +30,10 @@ if (duration.ongoing) {
 // Generate unique IDs for accessibility
 const projectId = `project-${title.toLowerCase().replace(/\s+/g, '-')}`;
 const modalId = `case-study-${title.toLowerCase().replace(/\s+/g, '-')}`;
+const channelId = `channel-${title.toLowerCase().replace(/\s+/g, '-')}`;
 
 // Format categories as string
-const categoriesText = categories.join(' • ');
+const categoriesText = categories.join(', ');
 ---
 
 <section 
@@ -42,49 +45,63 @@ const categoriesText = categories.join(' • ');
   <div class="project-content">
     <!-- Project Header -->
     <header class="flex items-baseline gap-3 mb-4">
-      <span class="project-icon w-8 h-8 text-[color:var(--project)] relative -top-[3px] inline-block align-middle" set:html={icon} />
+      <img class="project-icon w-8 h-8 relative -top-[3px] inline-block align-middle" src={icon} alt="{title} icon" width="32" height="32" />
       <h2 id={projectId} class="text-[color:var(--project)] text-2xl font-medium">{title}</h2>
     </header>
 
     <!-- Meta information -->
-    <p class="text-[#395C06] mb-3">
-      {categoriesText} • {durationText}
+    <p class="mb-3 flex items-center gap-3 flex-wrap" style={`color: var(--project)`}>
+      <span>{categoriesText}&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;{durationText}</span>
+      <span 
+        class="stage-tag inline-flex items-center px-3 py-1 rounded-full text-[18px] font-normal"
+        style={`background-color: ${stage.fill}; border: 1px solid ${stage.stroke}; color: ${stage.stroke}; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);`}
+      >
+        {stage.label}
+      </span>
     </p>
 
     <!-- Project Summary -->
-    <p class="text-[#395C06] max-w-xl mb-4">
-      {summary}
-    </p>
+    <p class="max-w-xl mb-4" style={`color: var(--project)`}>{summary}</p>
 
-    <!-- Case Study Button -->
-    <button 
-      class="text-[color:var(--project)] underline hover:text-[color:oklch(from_var(--project)_l_c_h/0.85)] transition-colors mb-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--project)] rounded-sm font-normal text-base"
-      data-modal-target={modalId}
-    >
-      Read the concise case study
-    </button>
+    <!-- Action Buttons -->
+    <div class="flex items-center gap-[50px] mb-10">
+      <!-- Case Study Button -->
+      <button 
+        class="underline hover:text-[color:oklch(from_var(--project)_l_c_h/0.85)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--project)] rounded-sm font-normal text-base"
+        style={`color: var(--project)`}
+        data-modal-target={modalId}
+      >
+        Read the concise case study
+      </button>
+
+      <!-- Download App Button (conditional) -->
+      {downloadLink && (
+        <a 
+          href={downloadLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline hover:text-[color:oklch(from_var(--project)_l_c_h/0.85)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--project)] rounded-sm font-normal text-base"
+          style={`color: var(--project)`}
+        >
+          Download app
+        </a>
+      )}
+    </div>
 
     <!-- Flows Section -->
     <div class="flows-section">
-      <h2 class="text-xl font-medium mb-6 text-[#395C06]">Highlighted Flows</h2>
+      <h2 class="text-xl font-medium mb-6" style={`color: var(--project)`}>Highlighted Flows</h2>
       
       <!-- FlowsList Component (React) -->
       <div class="space-y-4">
-        <FlowsList 
-          client:load 
-          flows={flows} 
-          projectColor={theme.color}
-        />
+        <FlowsList client:load flows={flows} projectColor={theme.color} channelId={channelId} />
       </div>
     </div>
   </div>
 
   <!-- Phone Preview (Right Column) -->
   <div class="phone-preview-container">
-    <PhonePreview 
-      client:load 
-      flows={flows}
-    />
+    <PhonePreview client:load channelId={channelId} />
   </div>
 
   <!-- Case Study Modal -->
@@ -98,14 +115,9 @@ const categoriesText = categories.join(' • ');
 </section>
 
 <style>
-  /* Project-specific theming with CSS variables */
-  .project-icon :global(svg) {
-    fill: var(--project);
-    display: block; /* remove baseline gap */
-    width: 100% !important;
-    height: 100% !important;
-    vertical-align: middle;
-    position: relative;
-    top: -2px; /* nudge the glyph up inside its box */
+  .project-icon {
+    image-rendering: -webkit-optimize-contrast; /* crisper pngs */
+    image-rendering: crisp-edges;
+    display: block;
   }
 </style>

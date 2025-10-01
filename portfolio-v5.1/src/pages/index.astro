@@ -3,8 +3,11 @@ import Base from "../layouts/Base.astro";
 import BackgroundStatic from "../components/BackgroundStatic.astro";
 import Icon from "../components/Icon.astro";
 import BioSectionInteractive from "../components/BioSectionInteractive.astro";
-import pharmacyIcon from "../../public/images/prj-app-icon-mypharm.svg?raw";
 import MyStack from "../components/MyStack.astro";
+import ProjectEntry from "../components/work/ProjectEntry.astro";
+import { projects } from "../data/projects";
+
+const sortedProjects = [...projects].sort((a, b) => b.order - a.order);
 
 ---
 <Base title="Theunis Hall — Portfolio">
@@ -36,432 +39,15 @@ import MyStack from "../components/MyStack.astro";
       </div>
     </section>
 
-    <!-- Work Section with direct implementation matching the screenshot -->
-    <section id="work" class="min-h-screen py-32 align-left text-[#395C06]" style="font-family: 'PP Mondwest', serif">
+    <!-- Work Section -->
+    <section id="work" class="min-h-screen py-32 align-left" style="font-family: 'PP Mondwest', serif">
       <div class="max-w-7xl">
         <div class="h2-display mb-16"></div>
-        
-        <!-- Project Entry 1: My Pharmacy -->
-        <section
-          role="region"
-          aria-labelledby="project-my-pharmacy"
-          class="project-entry grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-16 mb-64"
-          style="--project: #395C06"
-        >
-          <div class="project-content">
-            <!-- Project Header -->
-            <header class="flex items-baseline gap-3 mb-4">
-              <span class="project-icon w-8 h-8 text-[#395C06] relative top-[1px] inline-block align-middle" set:html={pharmacyIcon} />
-              <h2 id="project-my-pharmacy" class="text-[#395C06] text-2xl font-medium">My Pharmacy</h2>
-            </header>
-
-            <!-- Meta information -->
-            <p class="text-[#395C06] mb-3 flex items-center gap-3 flex-wrap">
-              <span>e-commerce, personal health, lifestyle&nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;2023 - 2024</span>
-              <span class="tag-launched">launched</span>
-            </p>
-
-            <!-- Project Summary -->
-            <p class="text-[#395C06] max-w-xl mb-4">
-              My Pharmacy is a multi-tenancy shopping app connecting 24k users with over 200 pharmacies all over Namibia. A first for the country.
-            </p>
-
-            <!-- Actions: Case Study + Download -->
-            <div class="flex items-center gap-10 mb-10">
-              <button 
-                class="case-trigger text-[#395C06] underline hover:text-[#395C06]/85 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#395C06] rounded-sm font-bold text-lg"
-              >
-                Read the [concise] case study
-              </button>
-              <a 
-                href="#" 
-                class="text-[#395C06] font-bold underline hover:text-[#395C06]/85 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#395C06] rounded-sm text-lg"
-              >
-                Download app
-              </a>
-            </div>
-
-            <!-- Flows Section -->
-            <div class="flows-section">
-              <h2 class="text-xl font-medium mb-6 text-[#395C06]">Highlighted Flows</h2>
-              
-              <!-- Flow rows -->
-              <div class="space-y-2">
-                <!-- Flow 1 -->
-                <div class="flow-row group py-2" role="presentation" tabindex="0" data-video="/flows/videos/buddy-ask-buddy.mp4">
-                  <div class="flow-hover-target inline-flex items-center gap-3 hover:bg-[#DFE7DB] transition-colors" tabindex="0">
-                    <div class="w-32">
-                      <h5 class="text-[#395C06] font-medium">Page name</h5>
-                    </div>
-                    <!-- Interaction points - Hidden for now, can be re-enabled in future -->
-                    <!-- <div class="w-44 text-[#500F0B]/70 text-sm">
-                      23 interaction points
-                    </div> -->
-                    <div class="text-lg text-[#395C06]">
-                      <div class="flex items-center whitespace-nowrap">
-                        <span class="challenge tip underline decoration-current decoration-1 underline-offset-[3px] mr-2 relative cursor-default" aria-label="Present personalized recommendations without overwhelming new users" data-tip="Present personalized recommendations without overwhelming new users">Challenge</span>
-                        <span class="arrow mx-1 flex-shrink-0" aria-hidden="true">
-                          <img 
-                            src="/images/arrow-icon.svg?v=4" 
-                            alt="" 
-                            width="24" 
-                            height="12"
-                          />
-                        </span>
-                        <span class="solution tip underline decoration-current decoration-1 underline-offset-[3px] ml-2 relative cursor-default" aria-label="Progressive disclosure of features based on user engagement patterns" data-tip="Progressive disclosure of features based on user engagement patterns">Solution</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Flow 2 -->
-                <div class="flow-row group py-2" role="presentation" tabindex="0">
-                  <div class="flow-hover-target inline-flex items-center gap-4 hover:bg-[#DFE7DB] transition-colors" tabindex="0">
-                    <div class="w-32">
-                      <h5 class="text-[#395C06] font-medium">Page name</h5>
-                    </div>
-                    <!-- Interaction points - Hidden for now, can be re-enabled in future -->
-                    <!-- <div class="w-44 text-[#500F0B]/70 text-sm">
-                      17 interaction points
-                    </div> -->
-                    <div class="text-lg text-[#395C06]">
-                      <div class="flex items-center whitespace-nowrap">
-                        <span class="challenge tip underline decoration-current decoration-1 underline-offset-[3px] mr-2 relative cursor-default" aria-label="Allow efficient search across thousands of products" data-tip="Allow efficient search across thousands of products">Challenge</span>
-                        <span class="arrow mx-1 flex-shrink-0" aria-hidden="true">
-                          <img 
-                            src="/images/arrow-icon.svg?v=4" 
-                            alt="" 
-                            width="24" 
-                            height="12"
-                          />
-                        </span>
-                        <span class="solution tip underline decoration-current decoration-1 underline-offset-[3px] ml-2 relative cursor-default" aria-label="Hybrid search algorithm" data-tip="Hybrid search algorithm">Solution</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Flow 3 -->
-                <div class="flow-row group py-2" role="presentation" tabindex="0">
-                  <div class="flow-hover-target inline-flex items-center gap-4 hover:bg-[#DFE7DB] transition-colors" tabindex="0">
-                    <div class="w-32">
-                      <h5 class="text-[#395C06] font-medium">Page name</h5>
-                    </div>
-                    <!-- Interaction points - Hidden for now, can be re-enabled in future -->
-                    <!-- <div class="w-44 text-[#500F0B]/70 text-sm">
-                      14 interaction points
-                    </div> -->
-                    <div class="text-lg text-[#395C06]">
-                      <div class="flex items-center whitespace-nowrap">
-                        <span class="challenge tip underline decoration-current decoration-1 underline-offset-[3px] mr-2 relative cursor-default" aria-label="Present complex medical information" data-tip="Present complex medical information">Challenge</span>
-                        <span class="arrow mx-1 flex-shrink-0" aria-hidden="true">
-                          <img 
-                            src="/images/arrow-icon.svg?v=4" 
-                            alt="" 
-                            width="24" 
-                            height="12"
-                          />
-                        </span>
-                        <span class="solution tip underline decoration-current decoration-1 underline-offset-[3px] ml-2 relative cursor-default" aria-label="Visual hierarchy with expandable sections" data-tip="Visual hierarchy with expandable sections">Solution</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Phone Preview (Right Column) -->
-          <div class="phone-preview sticky top-[96px] flex flex-col items-center">
-            <!-- iPhone mockup with overlay frame and underlying screen -->
-            <div class="iphone-mockup relative mx-auto w-[280px] select-none">
-              <!-- Screen (media sits underneath the frame) -->
-              <div class="screen absolute overflow-hidden" style="width:254px; height:545px; left:50%; top:50%; transform: translate(-50%, -50%); border-radius: 28px;">
-                <!-- Empty state -->
-                <div class="empty-state w-full h-full bg-white flex items-center justify-center">
-                  <span class="text-[#395C06] text-base">Hover over a page flow</span>
-                </div>
-                <!-- Media (hidden until hover) -->
-                <video class="flow-video w-full h-full object-cover hidden" muted playsinline loop preload="metadata"></video>
-                <img class="flow-image w-full h-full object-cover hidden" src="/images/profile-01.png" alt="App preview" />
-              </div>
-              <!-- Frame overlay (PNG/SVG with transparent cutout) -->
-              <img src="/images/iphone-frame.png" alt="iPhone frame" class="relative z-10 w-full h-auto pointer-events-none" />
-            </div>
-          </div>
-        </section>
-
-        <!-- Project Entry 2: Second Project (Example) -->
-        <section
-          role="region"
-          aria-labelledby="project-second"
-          class="project-entry grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-16 mb-32"
-          style="--project: #8E3D32"
-        >
-          <div class="project-content">
-            <!-- Project Header -->
-            <header class="flex items-baseline gap-3 mb-4">
-              <span class="project-icon w-8 h-8 text-[color:var(--project)] relative top-[1px] inline-block align-middle">
-                <img src="/images/prj-generic.svg" alt="Project icon" width="32" height="32" />
-              </span>
-              <h2 id="project-second" class="text-[color:var(--project)] text-2xl font-medium">Second Project</h2>
-            </header>
-
-            <!-- Meta information -->
-            <p class="text-[color:var(--project)] mb-3 flex items-center gap-3 flex-wrap">
-              <span>design, product, mobile&nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;2024 - 2025</span>
-              <span class="tag-launched">launched</span>
-            </p>
-
-            <!-- Project Summary -->
-            <p class="text-[color:var(--project)] max-w-xl mb-4">
-              This is a placeholder summary for the second project. Replace with your own copy.
-            </p>
-
-            <!-- Actions: Case Study + Download -->
-            <div class="flex items-center gap-10 mb-10">
-              <button 
-                class="case-trigger text-[color:var(--project)] underline hover:text-[color:oklch(from_var(--project)_l_c_h/0.85)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--project)] rounded-sm font-bold text-lg"
-              >
-                Read the [concise] case study
-              </button>
-              <a 
-                href="#" 
-                class="text-[color:var(--project)] font-bold underline hover:text-[color:oklch(from_var(--project)_l_c_h/0.85)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--project)] rounded-sm text-lg"
-              >
-                Download app
-              </a>
-            </div>
-
-            <!-- Flows Section -->
-            <div class="flows-section">
-              <h2 class="text-xl font-medium mb-6 text-[color:var(--project)]">Highlighted Flows</h2>
-              <div class="space-y-2">
-                <!-- Example Flow -->
-                <div class="flow-row group py-2" role="presentation" tabindex="0" data-video="/flows/videos/example.mp4">
-                  <div class="flow-hover-target inline-flex items-center gap-3 hover:bg-[#DFE7DB] transition-colors" tabindex="0">
-                    <div class="w-32">
-                      <h5 class="text-[color:var(--project)] font-medium">Example page</h5>
-                    </div>
-                    <div class="text-lg text-[color:var(--project)]">
-                      <div class="flex items-center whitespace-nowrap">
-                        <span class="challenge tip underline decoration-current decoration-1 underline-offset-[3px] mr-2 relative cursor-default" data-tip="Example challenge">Challenge</span>
-                        <span class="arrow mx-1 flex-shrink-0" aria-hidden="true">
-                          <img src="/images/arrow-icon.svg?v=4" alt="" width="24" height="12" />
-                        </span>
-                        <span class="solution tip underline decoration-current decoration-1 underline-offset-[3px] ml-2 relative cursor-default" data-tip="Example solution">Solution</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Phone Preview (Right Column) -->
-          <div class="phone-preview sticky top-[96px] flex flex-col items-center">
-            <div class="iphone-mockup relative mx-auto w-[280px] select-none">
-              <div class="screen absolute overflow-hidden" style="width:254px; height:545px; left:50%; top:50%; transform: translate(-50%, -50%); border-radius: 28px;">
-                <div class="empty-state w-full h-full bg-white flex items-center justify-center">
-                  <span class="text-[color:var(--project)] text-base">Hover over a page flow</span>
-                </div>
-                <video class="flow-video w-full h-full object-cover hidden" muted playsinline loop preload="metadata"></video>
-                <img class="flow-image w-full h-full object-cover hidden" src="/images/profile-01.png" alt="App preview" />
-              </div>
-              <img src="/images/iphone-frame.png" alt="iPhone frame" class="relative z-10 w-full h-auto pointer-events-none" />
-            </div>
-          </div>
-        </section>
+        {sortedProjects.map((p) => (<ProjectEntry {...p} />))}
       </div>
     </section>
   </main>
 </Base>
-
-<script>
-  // Wait for DOM to be fully loaded
-  document.addEventListener('DOMContentLoaded', () => {
-    // Initialize all project entries independently
-    document.querySelectorAll('.project-entry').forEach((entry) => {
-      const hoverTargets = entry.querySelectorAll('.flow-hover-target');
-      const flowImage = entry.querySelector('.flow-image');
-      const flowVideo = entry.querySelector('.flow-video');
-      const emptyState = entry.querySelector('.empty-state');
-      const mockup = entry.querySelector('.iphone-mockup');
-
-      const swapWithTransition = (swapFn) => {
-        if (!mockup) { swapFn(); return; }
-        mockup.classList.add('is-out');
-        setTimeout(() => {
-          swapFn();
-          requestAnimationFrame(() => {
-            mockup.classList.remove('is-out');
-          });
-        }, 180);
-      };
-
-      const showImage = (src) => {
-        if (!flowImage || !emptyState) return;
-        swapWithTransition(() => {
-          emptyState.classList.add('hidden');
-          if (flowVideo) {
-            flowVideo.classList.add('hidden');
-            try { flowVideo.pause(); } catch {}
-            flowVideo.removeAttribute('src');
-          }
-          flowImage.setAttribute('src', src);
-          flowImage.classList.remove('hidden');
-        });
-      };
-
-      const restoreEmpty = () => {
-        if (!flowImage || !emptyState) return;
-        swapWithTransition(() => {
-          flowImage.classList.add('hidden');
-          if (flowVideo) {
-            flowVideo.classList.add('hidden');
-            try { flowVideo.pause(); } catch {}
-            flowVideo.removeAttribute('src');
-          }
-          emptyState.classList.remove('hidden');
-        });
-      };
-
-      let currentToken = 0;
-      const showVideo = (src) => {
-        if (!flowVideo || !emptyState) return;
-        const token = ++currentToken;
-        swapWithTransition(() => {
-          emptyState.classList.add('hidden');
-          if (flowImage) flowImage.classList.add('hidden');
-          if (flowVideo.getAttribute('src') !== src) {
-            flowVideo.setAttribute('src', src);
-            try { flowVideo.load(); } catch {}
-          }
-          flowVideo.loop = true;
-          flowVideo.muted = true;
-          flowVideo.playsInline = true;
-          flowVideo.currentTime = 0;
-          flowVideo.classList.remove('hidden');
-          const tryPlay = () => {
-            if (token !== currentToken) return;
-            const playPromise = flowVideo.play();
-            if (playPromise && typeof playPromise.then === 'function') {
-              playPromise.catch(() => {});
-            }
-          };
-          if (flowVideo.readyState >= 2) {
-            tryPlay();
-          } else {
-            const onCanPlay = () => {
-              flowVideo.removeEventListener('canplay', onCanPlay);
-              tryPlay();
-            };
-            flowVideo.addEventListener('canplay', onCanPlay);
-          }
-        });
-      };
-
-      const demoImage = '/placeholder-phone-1.jpg';
-      hoverTargets.forEach((target) => {
-        target.addEventListener('mouseenter', () => {
-          const row = target.closest('.flow-row');
-          const vid = row?.dataset?.video;
-          const img = row?.dataset?.image || demoImage;
-          if (vid) showVideo(vid); else showImage(img);
-        });
-        target.addEventListener('mouseleave', restoreEmpty);
-        target.addEventListener('focus', () => {
-          const row = target.closest('.flow-row');
-          const vid = row?.dataset?.video;
-          const img = row?.dataset?.image || demoImage;
-          if (vid) showVideo(vid); else showImage(img);
-        });
-        target.addEventListener('blur', restoreEmpty);
-      });
-
-      // Case study side-panel modal functionality per entry
-      const modalButton = entry.querySelector('.case-trigger');
-      if (!modalButton) return;
-      const overlay = document.createElement('div');
-      overlay.className = 'case-overlay fixed inset-0 z-50 hidden';
-      overlay.setAttribute('role', 'dialog');
-      overlay.setAttribute('aria-modal', 'true');
-
-      overlay.innerHTML = `
-      <div class="case-backdrop absolute inset-0 bg-black/30"></div>
-      <aside class="case-panel absolute right-5 top-5 bottom-5 w-full max-w-[560px] bg-[#FBF9F5] border border-[#EAE2DE] rounded-[32px] shadow-xl translate-x-full transition-transform duration-300 ease-out flex flex-col" aria-labelledby="case-title">
-        <header class="relative px-5 py-4 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <button class="case-close p-1 rounded focus:outline-none focus-visible:ring-2" aria-label="Close case study">
-              <img src="/images/close-button.svg" alt="" width="20" height="20" onerror="this.replaceWith(document.createTextNode('×'))"/>
-            </button>
-          </div>
-        </header>
-        <div class="px-6 pb-8 overflow-y-auto">
-          <h2 id="case-title" class="h2 text-[color:var(--project)] mb-6">My Pharmacy</h2>
-          <section class="space-y-6 text-[color:var(--project)]" style="font-family: 'PP Mondwest', serif">
-            <div>
-              <h5 class="h5 font-bold mb-1">About</h5>
-              <p class="h5">Concise overview goes here.</p>
-            </div>
-            <div>
-              <h5 class="h5 font-bold mb-1">Challenge</h5>
-              <p class="h5">Single paragraph explaining the challenge.</p>
-            </div>
-            <div>
-              <h5 class="h5 font-bold mb-1">Impact</h5>
-              <p class="h5">Key impact statement.</p>
-            </div>
-            <div>
-              <h5 class="h5 font-bold mb-1">Project Details</h5>
-              <p class="h5">Role, timeline, platform, company, industry.</p>
-            </div>
-            <div>
-              <h5 class="h5 font-bold mb-1">Outcomes</h5>
-              <ul class="list-disc pl-6 h5">
-                <li>Outcome 1</li>
-                <li>Outcome 2</li>
-              </ul>
-            </div>
-          </section>
-        </div>
-      </aside>
-    `;
-
-      document.body.appendChild(overlay);
-      const panel = overlay.querySelector('.case-panel');
-      const backdrop = overlay.querySelector('.case-backdrop');
-      const closeBtn = overlay.querySelector('.case-close');
-
-      const openPanel = () => {
-        overlay.classList.remove('hidden');
-        if (backdrop) backdrop.classList.remove('hidden');
-        overlay.classList.add('is-open');
-        document.body.classList.add('modal-open');
-        requestAnimationFrame(() => {
-          panel.classList.remove('translate-x-full');
-        });
-      };
-      const closePanel = () => {
-        document.body.classList.remove('modal-open');
-        overlay.classList.remove('is-open');
-        if (backdrop) backdrop.classList.add('hidden');
-        panel.classList.add('translate-x-full');
-        setTimeout(() => {
-          overlay.classList.add('hidden');
-          if (backdrop) backdrop.classList.remove('hidden');
-        }, 300);
-      };
-
-      modalButton.addEventListener('click', openPanel);
-      if (closeBtn) closeBtn.addEventListener('click', closePanel);
-      if (backdrop) backdrop.addEventListener('click', closePanel);
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !overlay.classList.contains('hidden')) closePanel();
-      });
-    });
-  });
-</script>
 
 <style>
   /* Transition for phone preview images */
@@ -511,7 +97,9 @@ import MyStack from "../components/MyStack.astro";
       0 8px 16px rgba(0, 0, 0, 0.20),
       0 16px 32px rgba(0, 0, 0, 0.14);
     padding: 8px 10px;
-    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
     line-height: 1.4;
     border-radius: 12px;
     white-space: normal;
@@ -538,6 +126,13 @@ import MyStack from "../components/MyStack.astro";
   }
   body.modal-open .page-blur {
     filter: blur(8px);
+  }
+
+  /* Hide navigation when modal is open */
+  body.modal-open nav {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
   }
 
   /* Fade the scrim (backdrop) in/out with the modal open state */

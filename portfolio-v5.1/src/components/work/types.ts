@@ -1,30 +1,36 @@
 // Common types for the work components
 
+export type Media = {
+  type: 'image' | 'video';
+  src: string;
+};
+
 export interface Flow {
   page: string;
-  interactions: string;
+  interactions?: string;
   challenge: string;
   solution: string;
-  media: { 
-    type: "video" | "image";
-    src: string;
-    poster?: string;
-  };
+  media: Media;
 }
 
+export type ProjectTheme = { color: string };
+export type ProjectDuration = { start: number; end?: number; ongoing?: boolean };
+export type ProjectStage = {
+  label: string;
+  fill: string;
+  stroke: string;
+};
+
 export interface ProjectProps {
+  order: number; // used for sorting 6 -> 1
   title: string;
-  icon: string; // SVG string or component
+  icon: string; // inline SVG string via ?raw
   categories: string[];
-  duration: { 
-    start: number; 
-    end?: number;
-    ongoing?: boolean;
-  };
+  duration: ProjectDuration;
   summary: string;
-  caseStudy: string; // HTML content for modal
-  theme: { 
-    color: string 
-  };
+  caseStudy: string; // HTML string for modal
+  theme: ProjectTheme;
   flows: Flow[];
+  downloadLink?: string; // Optional download link for apps
+  stage: ProjectStage;
 }

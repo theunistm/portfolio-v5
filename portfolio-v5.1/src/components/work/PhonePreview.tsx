@@ -1,86 +1,104 @@
-import React, { useState, useEffect, useRef } from 'react';
-import type { Flow } from './types';
+import React, { useEffect, useRef, useState } from 'react';
+import type { Media } from './types';
 
-interface PhonePreviewProps {
-  flows: Flow[];
-}
+type Props = {
+  channelId: string;
+};
 
-export default function PhonePreview({ flows }: PhonePreviewProps) {
-  const [activeFlowIndex, setActiveFlowIndex] = useState(0);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  
-  // Listen for flow selection changes
+export default function PhonePreview({ channelId }: Props) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const [media, setMedia] = useState<Media | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
   useEffect(() => {
-    const handleFlowChange = (event: CustomEvent<{ flowIndex: number }>) => {
-      setActiveFlowIndex(event.detail.flowIndex);
-      
-      // Play video if it's a video and currently visible
-      const activeFlow = flows[event.detail.flowIndex];
-      if (activeFlow?.media.type === 'video') {
-        const videoRef = videoRefs.current[event.detail.flowIndex];
-        if (videoRef) {
-          videoRef.currentTime = 0; // Reset to beginning
-          videoRef.play().catch(err => console.error('Error playing video:', err));
-        }
-      }
+    const container = document.getElementById(channelId);
+    if (!container) return;
+
+    const onShow = (e: Event) => {
+      const detail = (e as CustomEvent).detail as Media;
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setMedia(detail);
+        setIsTransitioning(false);
+      }, 0);
+    };
+    const onClear = () => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setMedia(null);
+        setIsTransitioning(false);
+      }, 0);
     };
 
-    // TypeScript requires this cast for CustomEvent
-    window.addEventListener('updatePhonePreview', handleFlowChange as EventListener);
-    
+    container.addEventListener('flow:show', onShow as EventListener);
+    container.addEventListener('flow:clear', onClear as EventListener);
     return () => {
-      window.removeEventListener('updatePhonePreview', handleFlowChange as EventListener);
+      container.removeEventListener('flow:show', onShow as EventListener);
+      container.removeEventListener('flow:clear', onClear as EventListener);
     };
-  }, [flows]);
+  }, [channelId]);
 
-  // Get current flow
-  const activeFlow = flows[activeFlowIndex];
-  
-  if (!activeFlow) return null;
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (media?.type === 'video') {
+      v.currentTime = 0;
+      const p = v.play();
+      if (p && typeof p.then === 'function') p.catch(() => {});
+    } else {
+      try { v.pause(); } catch {}
+      v.removeAttribute('src');
+      v.load();
+    }
+  }, [media]);
 
   return (
-    <div className="phone-preview sticky top-[96px] flex flex-col items-center">
-      <div className="phone-frame relative mx-auto w-[240px] h-[480px] bg-white rounded-[32px] border-[8px] border-[#1A1A1A] shadow-md overflow-hidden">
-        {/* Notch */}
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[80px] h-[20px] bg-[#1A1A1A] rounded-b-[8px] z-10"></div>
-        
-        {/* Media Container */}
-        <div className="media-container h-full w-full overflow-hidden bg-white">
-          {flows.map((flow, index) => (
-            <div
-              key={`preview-${index}`}
-              className={`media-item absolute inset-0 transition-opacity duration-300 ${
-                activeFlowIndex === index ? 'opacity-100 z-1' : 'opacity-0 z-0'
-              }`}
+    <div className="phone-preview sticky top-[96px] flex flex-col items-center" id={channelId} ref={containerRef}>
+      <div className={`iphone-mockup relative mx-auto w-[280px] select-none transition-transform duration-300 ease-out ${media ? 'scale-[1.02]' : 'scale-100'}`}>
+        <div className="screen absolute overflow-hidden" style={{ width: 254, height: 545, left: '50%', top: '50%', transform: 'translate(-50%, -50%)', borderRadius: 28 }}>
+          {!media && (
+            <div 
+              className="empty-state w-full h-full bg-white flex items-center justify-center transition-all duration-300"
+              style={{ 
+                opacity: isTransitioning ? 0 : 1,
+                filter: isTransitioning ? 'blur(8px)' : 'blur(0px)'
+              }}
             >
-              {flow.media.type === 'video' ? (
-                <video
-                  ref={(el) => { videoRefs.current[index] = el; }}
-                  className="w-full h-full object-cover"
-                  src={flow.media.src}
-                  poster={flow.media.poster}
-                  playsInline
-                  muted
-                  loop
-                  preload="metadata"
-                />
-              ) : (
-                <img
-                  className="w-full h-full object-cover"
-                  src={flow.media.src}
-                  alt={`Preview of ${flow.page}`}
-                  loading="lazy"
-                />
-              )}
+              <span className="text-base" style={{ color: '#395C06' }}>Hover over a page flow</span>
             </div>
-          ))}
+          )}
+          {media?.type === 'video' && (
+            <video 
+              ref={videoRef} 
+              className="flow-video w-full h-full object-cover transition-all duration-300" 
+              style={{ 
+                opacity: isTransitioning ? 0 : 1,
+                filter: isTransitioning ? 'blur(8px)' : 'blur(0px)'
+              }}
+              muted 
+              playsInline 
+              loop 
+              preload="metadata" 
+              src={media.src} 
+            />
+          )}
+          {media?.type === 'image' && (
+            <img 
+              ref={imgRef} 
+              className="flow-image w-full h-full object-cover transition-all duration-300" 
+              style={{ 
+                opacity: isTransitioning ? 0 : 1,
+                filter: isTransitioning ? 'blur(8px)' : 'blur(0px)'
+              }}
+              src={media.src} 
+              alt="App preview" 
+            />
+          )}
         </div>
+        <img src="/images/iphone-frame.png" alt="iPhone frame" className="relative z-10 w-full h-auto pointer-events-none" />
       </div>
-      
-      {/* Hover instruction */}
-      <p className="text-center text-sm text-[#395C06] mt-3">
-        Hover over a page flow
-      </p>
     </div>
   );
 }
