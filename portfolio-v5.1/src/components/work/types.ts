@@ -13,7 +13,7 @@ export interface Flow {
   media: Media;
 }
 
-export type ProjectTheme = { color: string };
+export type ProjectTheme = { color: string; hoverColor: string };
 export type ProjectDuration = { start: number; end?: number; ongoing?: boolean };
 export type ProjectStage = {
   label: string;

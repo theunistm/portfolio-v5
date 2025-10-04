@@ -4,10 +4,11 @@ import type { Flow } from './types';
 type FlowsListProps = {
   flows: Flow[];
   projectColor: string;
+  hoverColor: string;
   channelId: string;
 };
 
-export default function FlowsList({ flows, projectColor, channelId }: FlowsListProps) {
+export default function FlowsList({ flows, projectColor, hoverColor, channelId }: FlowsListProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const flowRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -59,15 +60,24 @@ export default function FlowsList({ flows, projectColor, channelId }: FlowsListP
         >
           <div 
             ref={(el) => { flowRefs.current[index] = el; }}
-            className="group inline-flex items-center gap-3 hover:bg-[#DFE7DB] transition-colors"
+            className="group inline-flex items-center gap-3 transition-colors"
+            style={{
+              ['--hover-bg' as any]: hoverColor
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = hoverColor;
+              dispatch('show', flows[index]?.media);
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '';
+              dispatch('clear');
+            }}
             role="presentation"
             tabIndex={0}
             onClick={() => {
               // No click behavior; not interactive, preview updates only on hover/focus
             }}
-            onMouseEnter={() => dispatch('show', flows[index]?.media)}
             onKeyDown={(e) => handleKeyDown(e, index)}
-            onMouseLeave={() => dispatch('clear')}
             onBlur={() => dispatch('clear')}
           >
             {/* Page name */}

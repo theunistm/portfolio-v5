@@ -39,7 +39,7 @@ const categoriesText = categories.join(', ');
 <section 
   role="region"
   aria-labelledby={projectId}
-  class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-16 mb-32"
+  class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-16 mb-[200px]"
   style={`--project: ${theme.color}; font-family: 'PP Mondwest', serif`}
 >
   <div class="project-content">
@@ -94,7 +94,7 @@ const categoriesText = categories.join(', ');
       
       <!-- FlowsList Component (React) -->
       <div class="space-y-4">
-        <FlowsList client:load flows={flows} projectColor={theme.color} channelId={channelId} />
+        <FlowsList client:load flows={flows} projectColor={theme.color} hoverColor={theme.hoverColor} channelId={channelId} />
       </div>
     </div>
   </div>

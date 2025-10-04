@@ -15,6 +15,7 @@ export default function CaseStudyModal({
   projectColor
 }: CaseStudyModalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -34,6 +35,8 @@ export default function CaseStudyModal({
         // Save scroll position before opening
         scrollPosition.current = window.scrollY;
         setIsOpen(true);
+        // Trigger animation after mount
+        setTimeout(() => setIsAnimating(true), 10);
       }
     };
 
@@ -122,7 +125,12 @@ export default function CaseStudyModal({
   }, [isOpen]);
 
   const closeModal = () => {
-    setIsOpen(false);
+    // Trigger slide-out animation
+    setIsAnimating(false);
+    // Wait for animation to complete before unmounting
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 300);
   };
 
   if (!isOpen) return null;
@@ -143,7 +151,9 @@ export default function CaseStudyModal({
       {/* Modal panel sliding from right */}
       <div
         ref={modalRef}
-        className="relative bg-white rounded-[32px] shadow-2xl w-full max-w-[560px] h-[calc(100vh-40px)] overflow-y-auto border"
+        className={`relative bg-white rounded-[32px] shadow-2xl w-full max-w-[560px] h-[calc(100vh-40px)] overflow-y-auto border transition-transform duration-300 ease-out ${
+          isAnimating ? 'translate-x-0' : 'translate-x-full'
+        }`}
         style={{ 
           borderColor: projectColor,
           borderWidth: '1px',
@@ -157,7 +167,7 @@ export default function CaseStudyModal({
           <button 
             ref={closeButtonRef}
             aria-label="Close case study"
-            className="fixed top-8 right-8 z-50 w-8 h-8 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
+            className="w-8 h-8 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
             onClick={closeModal}
           >
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
