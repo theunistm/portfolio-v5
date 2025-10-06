@@ -151,7 +151,7 @@ export default function CaseStudyModal({
       {/* Modal panel sliding from right */}
       <div
         ref={modalRef}
-        className={`relative bg-white rounded-[32px] shadow-2xl w-full max-w-[560px] h-[calc(100vh-40px)] overflow-y-auto border transition-transform duration-300 ease-out ${
+        className={`case-study-modal-panel relative bg-white rounded-[32px] shadow-2xl w-full max-w-[560px] h-[calc(100vh-40px)] overflow-y-auto border transition-transform duration-300 ease-out ${
           isAnimating ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{ 
@@ -243,6 +243,37 @@ export default function CaseStudyModal({
       </div>
       
       <style>{`
+        /* Custom scrollbar styling */
+        .case-study-modal-panel {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(184, 175, 168, 0.5) transparent;
+          scrollbar-gutter: stable;
+        }
+        
+        .case-study-modal-panel::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .case-study-modal-panel::-webkit-scrollbar-track {
+          background: transparent;
+          margin: 32px 0;
+        }
+        
+        .case-study-modal-panel::-webkit-scrollbar-thumb {
+          background-color: rgba(184, 175, 168, 0.5);
+          border-radius: 3px;
+          transition: opacity 0.3s ease;
+        }
+        
+        .case-study-modal-panel::-webkit-scrollbar-thumb:hover {
+          background-color: rgba(184, 175, 168, 0.7);
+        }
+        
+        /* Auto-hide scrollbar when not scrolling */
+        .case-study-modal-panel:not(:hover)::-webkit-scrollbar-thumb {
+          opacity: 0;
+        }
+        
         /* H5 for all copy (subheadings and paragraphs) */
         .case-study-content h2,
         .case-study-content h3,

@@ -1,45 +1,37 @@
 {
-  "text": "Welcome to my portfolio. Here you'll see what I've built.\u00A0I make useful software. From Windhoek, I'm shipping an e‑commerce app for Nampharm. Previously at Buddy Industries where we shipped apps.\u00A0Product designer transitioning to frontend, I create for clarity and cut through the BS.",
-  "interactiveWords": ["built", "useful software", "Windhoek", "e‑commerce app", "Nampharm", "Buddy Industries", "shipped apps", "frontend", "clarity", "BS"],
+  "text": "Welcome to my portfolio. Here you'll see what I've built. I make useful software. I'm shipping an e‑commerce platform for Nampharm. Previously at Buddy Industries. I'm a product designer who codes prototypes to explore and de‑risk ideas. I optimise for clarity and cut through the noise.",
+  "interactiveWords": ["built", "useful software", "e‑commerce platform", "Nampharm", "Buddy Industries", "codes prototypes", "clarity", "noise"],
   "expansions": {
     "built": {
-      "text": "with pixels and code",
+      "text": "that blends pixels and code",
       "expansions": {}
     },
     "useful software": {
-      "text": "that's easy to understand and a joy to use",
+      "text": "that's clear and enjoyable to use",
       "expansions": {}
     },
-    "Windhoek": {
-      "text": ", the capital of Namibia",
-      "expansions": {}
-    },
-    "e‑commerce app": {
-      "text": "plus operations tools & various sites",
+    "e‑commerce platform": {
+      "text": "that includes ops tools and sites",
       "expansions": {}
     },
     "Nampharm": {
-      "text": ", Namibia's largest pharmaceutical distributor",
+      "text": "Namibia's largest pharmaceutical distributor",
       "expansions": {}
     },
     "Buddy Industries": {
-      "text": "a leading tech start up",
+      "text": "shipping a super app and a P2P payments app",
       "expansions": {}
     },
-    "shipped apps": {
-      "text": ", such as Namibia's first super app and a P2P payments app",
-      "expansions": {}
-    },
-    "frontend": {
-      "text": ", turning UI into production code",
+    "codes prototypes": {
+      "text": "with AI‑assisted tooling",
       "expansions": {}
     },
     "clarity": {
-      "text": "coherent patterns and measurable outcomes",
+      "text": "that leads to coherent patterns and measurable outcomes",
       "expansions": {}
     },
-    "BS": {
-      "text": ", which to me, means no self‑aggrandising, yet acknowledge your capability and wins",
+    "noise": {
+      "text": "that gets in the way of working software",
       "expansions": {}
     }
   }

@@ -66,7 +66,7 @@ export default function PhonePreview({ channelId }: Props) {
                 filter: isTransitioning ? 'blur(8px)' : 'blur(0px)'
               }}
             >
-              <span className="text-base" style={{ color: '#395C06' }}>Hover over a page flow</span>
+              <span className="text-base" style={{ color: '#000000' }}>Hover over a page flow</span>
             </div>
           )}
           {media?.type === 'video' && (
