@@ -1,5 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
+  "type": "module",
   "devDependencies": {
     "astro": "^5.13.9",
     "tailwindcss": "^4.1.11"
@@ -16,6 +17,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "generate-posters": "node scripts/generate-video-posters.js",
+    "prebuild": "node scripts/generate-video-posters.js"
   }
 }

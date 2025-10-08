@@ -95,7 +95,7 @@ export default function FlowsList({ flows, projectColor, hoverColor, channelId }
             {/* Page name - clickable on mobile/tablet only */}
             <div className="flex-shrink-0">
               <button
-                className="font-medium whitespace-nowrap text-base md:text-lg lg:cursor-default text-left min-h-[44px] lg:min-h-0 flex items-center hover:opacity-80 lg:hover:opacity-100 active:opacity-60 lg:active:opacity-100 transition-opacity lg:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-current rounded-sm lg:focus-visible:ring-0"
+                className="font-bold whitespace-nowrap text-base md:text-lg lg:cursor-default text-left min-h-[44px] lg:min-h-0 flex items-center hover:opacity-80 lg:hover:opacity-100 active:opacity-60 lg:active:opacity-100 transition-opacity lg:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-current rounded-sm lg:focus-visible:ring-0"
                 style={{ color: projectColor }}
                 onClick={(e) => {
                   // Only open modal on mobile/tablet (< 1024px)

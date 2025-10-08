@@ -53,8 +53,19 @@ export default function PhonePreviewModal({ channelId }: PhonePreviewModalProps)
     if (isOpen && media?.type === 'video') {
       v.load(); // Reload sources
       v.currentTime = 0;
-      const p = v.play();
-      if (p && typeof p.then === 'function') p.catch(() => {});
+      
+      // Wait for video to be ready before playing to avoid blank flash
+      const playWhenReady = () => {
+        const p = v.play();
+        if (p && typeof p.then === 'function') p.catch(() => {});
+      };
+      
+      if (v.readyState >= 3) {
+        // HAVE_FUTURE_DATA or HAVE_ENOUGH_DATA
+        playWhenReady();
+      } else {
+        v.addEventListener('canplay', playWhenReady, { once: true });
+      }
     } else if (!isOpen && v) {
       try {
         v.pause();
@@ -188,6 +199,7 @@ export default function PhonePreviewModal({ channelId }: PhonePreviewModalProps)
                 playsInline
                 loop
                 preload="metadata"
+                poster={media.src.replace(/\.(webm|mp4)$/, '.jpg')}
               >
                 <source src={media.src} type="video/webm" />
                 <source src={media.src.replace('.webm', '.mp4')} type="video/mp4" />
