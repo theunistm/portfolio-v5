@@ -17,6 +17,8 @@ const {
 const currentPath = Astro.url.pathname;
 const canonical = Astro.site ? new URL(currentPath, Astro.site).toString() : currentPath;
 const ogType = "website";
+// Convert relative og:image path to absolute URL
+const absoluteOgImage = Astro.site ? new URL(ogImage, Astro.site).toString() : ogImage;
 ---
 <!doctype html>
 <html lang="en">
@@ -34,7 +36,7 @@ const ogType = "website";
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={absoluteOgImage} />
     <meta property="og:image:alt" content={ogImageAlt} />
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -42,7 +44,7 @@ const ogType = "website";
     {twitterHandle && <meta name="twitter:creator" content={twitterHandle} />}
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={absoluteOgImage} />
     <!-- Mark JS-enabled early so CSS can provide a no-JS fallback -->
     <script>document.documentElement.classList.add('js');</script>
     <!-- Critical inline CSS to ensure first paint starts hidden and can fade in -->
