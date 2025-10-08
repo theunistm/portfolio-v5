@@ -11,6 +11,7 @@ export interface Flow {
   challenge: string;
   solution: string;
   media: Media;
+  iconType?: 'play' | 'image' | 'view'; // Optional icon type, defaults to 'play'
 }
 
 export type ProjectTheme = { color: string; hoverColor: string };
