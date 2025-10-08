@@ -1,0 +1,5 @@
+[build]
+  base = "portfolio-v5.1"
+  command = "bash netlify-build.sh"
+  publish = "portfolio-v5.1/dist"
+  node_version = "20"
