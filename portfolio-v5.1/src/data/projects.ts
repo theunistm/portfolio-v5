@@ -100,9 +100,9 @@ export const projects: ProjectProps[] = [
     `,
     theme: { color: '#35357D', hoverColor: '#E4E4F1' },
     flows: [
-      { page: 'Home', challenge: 'Show the essentials without creating noise for the user.', solution: 'We grouped key info on one screen, User balance, Redeem actions, and History overview, so staff get what they need at a glance.', media: { type: 'image', src: '/flows/images/vouch/01-v-home.png' } },
+      { page: 'Home', challenge: 'Show the essentials without creating noise for the user.', solution: 'We grouped key info on one screen, User balance, Redeem actions, and History overview, so staff get what they need at a glance.', media: { type: 'image', src: '/flows/images/vouch/01-v-home.webp' } },
       { page: 'Voucher redemption', challenge: 'In a fast, high‑stress retail flow, workers must reach redemption tools instantly.', solution: 'Single‑tap access to PIN entry, barcode/QR scan, and serial search. Each flow shares the same pattern to reduce cognitive load under pressure.', media: { type: 'video', src: '/flows/videos/vouch/02-v-voucher.webm' } },
-      { page: 'Redemption history', challenge: 'Make large volumes of redemption data easy to scan and trust.', solution: 'Hierarchical layout with clear states and timestamps; newest first, with searchable detail views for quick look‑ups and audits.', media: { type: 'image', src: '/flows/images/vouch/03-v-history.png' } },
+      { page: 'Redemption history', challenge: 'Make large volumes of redemption data easy to scan and trust.', solution: 'Hierarchical layout with clear states and timestamps; newest first, with searchable detail views for quick look‑ups and audits.', media: { type: 'image', src: '/flows/images/vouch/03-v-history.webp' } },
     ],
   },
 
@@ -142,10 +142,10 @@ export const projects: ProjectProps[] = [
     `,
     theme: { color: '#8C3704', hoverColor: '#F5E9E3' },
     flows: [
-      { page: 'Home', challenge: 'How to effectively show the essential info with little to no noise. ', solution: 'We surfaced the key signals (rental stage, car status, pickup/return times, and timely notices) so users understand “where they are” at a glance.', media: { type: 'image', src: '/flows/images/my-rental/01-mr-home.png' } },
-      { page: 'SOS', challenge: 'In stressful moments, information must be instant and unambiguous.', solution: 'We provide big, readable actions with tap‑to‑call emergency numbers and share‑my‑location, plus graceful fallbacks when GPS isn’t available.', media: { type: 'image', src: '/flows/images/my-rental/02-mr-sos.png' } },
-      { page: 'Points of attraction', challenge: 'How to Hhelp travellers find the right places fast. while keeping the info minimal.', solution: 'A curated, categorised list (fuel, towns, attractions, campsites) ranked by proximity, with one‑tap directions or call.', media: { type: 'image', src: '/flows/images/my-rental/03-mr-navigate.png' } },
-      { page: 'Voucher tracking', challenge: 'Tracking and redeeming provider vouchers is fiddly across emails and texts.', solution: 'All vouchers live in‑app and are visible, scannable, and quickly redeemable with provider, with a clear record of what’s been used.', media: { type: 'image', src: '/flows/images/my-rental/04-mr-vouchers.png' } },
+      { page: 'Home', challenge: 'How to effectively show the essential info with little to no noise. ', solution: 'We surfaced the key signals (rental stage, car status, pickup/return times, and timely notices) so users understand “where they are” at a glance.', media: { type: 'image', src: '/flows/images/my-rental/01-mr-home.webp' } },
+      { page: 'SOS', challenge: 'In stressful moments, information must be instant and unambiguous.', solution: 'We provide big, readable actions with tap‑to‑call emergency numbers and share‑my‑location, plus graceful fallbacks when GPS isn’t available.', media: { type: 'image', src: '/flows/images/my-rental/02-mr-sos.webp' } },
+      { page: 'Points of attraction', challenge: 'How to Hhelp travellers find the right places fast. while keeping the info minimal.', solution: 'A curated, categorised list (fuel, towns, attractions, campsites) ranked by proximity, with one‑tap directions or call.', media: { type: 'image', src: '/flows/images/my-rental/03-mr-navigate.webp' } },
+      { page: 'Voucher tracking', challenge: 'Tracking and redeeming provider vouchers is fiddly across emails and texts.', solution: 'All vouchers live in‑app and are visible, scannable, and quickly redeemable with provider, with a clear record of what’s been used.', media: { type: 'image', src: '/flows/images/my-rental/04-mr-vouchers.webp' } },
     ],
   },
 
@@ -287,8 +287,8 @@ export const projects: ProjectProps[] = [
     theme: { color: '#115860', hoverColor: '#D7EFF1' },
     flows: [
       { page: 'Guru onboarding', challenge: 'Get users creating quickly while building trust.', solution: 'Short, clear steps (email/Apple/Google + phone verification), pick interests/country, set avatar, with an optional “Become a Travel Guru” path for monetisation.', media: { type: 'video', src: '/flows/videos/travel-guru/01-tg-onboarding.webm' } },
-      { page: 'Travel map', challenge: 'Turn scattered posts into meaningful, place‑based discovery.', solution: 'Map‑first home with location pins, mixed‑media previews, and quick tag filters. Tap any place to dive into local content.', media: { type: 'image', src: '/flows/images/travel-guru/02-tg-map.png' } },
-      { page: 'Explore country', challenge: 'Help travellers orient fast in a new country.', solution: 'Country hub with a “Welcome” hero and showing curated content of the country.', media: { type: 'image', src: '/flows/images/travel-guru/03-tg-country.png' } },
+      { page: 'Travel map', challenge: 'Turn scattered posts into meaningful, place‑based discovery.', solution: 'Map‑first home with location pins, mixed‑media previews, and quick tag filters. Tap any place to dive into local content.', media: { type: 'image', src: '/flows/images/travel-guru/02-tg-map.webp' } },
+      { page: 'Explore country', challenge: 'Help travellers orient fast in a new country.', solution: 'Country hub with a “Welcome” hero and showing curated content of the country.', media: { type: 'image', src: '/flows/images/travel-guru/03-tg-country.webp' } },
       { page: 'Detailed search', challenge: 'Find the right experience across media and places.', solution: 'Tagged, filterable search across blogs, videos, podcasts, and locations, ranked by relevance with country and tag pivots.', media: { type: 'video', src: '/flows/videos/travel-guru/04-tg-search.webm' } },
       { page: 'Community', challenge: 'Turn scattered travel questions into reliable, local answers without endless threads or noise.', solution: 'A structured Community page with topic tags, country/location context, and an “accepted answer” system — surfacing the most helpful reply first while keeping the full discussion accessible', media: { type: 'video', src: '/flows/videos/travel-guru/05-tg-community.webm' } },
       { page: 'Content types', challenge: 'What are the best ways for users to present rich media with context without clutter.', solution: 'Clean detail views per type with location, tags, and creator info up front; standard actions (save, share, report) and premium gating when applicable.', media: { type: 'video', src: '/flows/videos/travel-guru/06-tg-create.webm' } },

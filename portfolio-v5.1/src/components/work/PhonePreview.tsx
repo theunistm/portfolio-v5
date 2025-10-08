@@ -44,6 +44,7 @@ export default function PhonePreview({ channelId }: Props) {
     const v = videoRef.current;
     if (!v) return;
     if (media?.type === 'video') {
+      v.load(); // Reload sources
       v.currentTime = 0;
       const p = v.play();
       if (p && typeof p.then === 'function') p.catch(() => {});
@@ -80,9 +81,11 @@ export default function PhonePreview({ channelId }: Props) {
               muted 
               playsInline 
               loop 
-              preload="metadata" 
-              src={media.src} 
-            />
+              preload="metadata"
+            >
+              <source src={media.src} type="video/webm" />
+              <source src={media.src.replace('.webm', '.mp4')} type="video/mp4" />
+            </video>
           )}
           {media?.type === 'image' && (
             <img 

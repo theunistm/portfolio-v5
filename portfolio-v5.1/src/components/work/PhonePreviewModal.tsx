@@ -51,6 +51,7 @@ export default function PhonePreviewModal({ channelId }: PhonePreviewModalProps)
     if (!v) return;
     
     if (isOpen && media?.type === 'video') {
+      v.load(); // Reload sources
       v.currentTime = 0;
       const p = v.play();
       if (p && typeof p.then === 'function') p.catch(() => {});
@@ -187,8 +188,10 @@ export default function PhonePreviewModal({ channelId }: PhonePreviewModalProps)
                 playsInline
                 loop
                 preload="metadata"
-                src={media.src}
-              />
+              >
+                <source src={media.src} type="video/webm" />
+                <source src={media.src.replace('.webm', '.mp4')} type="video/mp4" />
+              </video>
             )}
             {media?.type === 'image' && (
               <img
