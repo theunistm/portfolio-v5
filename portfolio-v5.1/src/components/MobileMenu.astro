@@ -1,0 +1,215 @@
+---
+// MobileMenu.astro - Full-screen mobile menu (mobile only)
+import HomeIcon from '../icons/home.svg?raw';
+import WorkIcon from '../icons/work.svg?raw';
+import ExplorationsIcon from '../icons/explorations.svg?raw';
+import InstagramIcon from '../icons/instagram.svg?raw';
+import TwitterIcon from '../icons/twitter.svg?raw';
+import LinkedInIcon from '../icons/linkedin.svg?raw';
+import GitHubIcon from '../icons/github.svg?raw';
+import ResumeIcon from '../icons/resume.svg?raw';
+
+export interface Props {
+  currentPath: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+// Get current date for display in DD/MM/YYYY format
+const today = new Date();
+const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+---
+
+<!-- Mobile Menu Overlay -->
+<div
+  id="mobile-menu"
+  class="mobile-menu fixed inset-0 z-[95] bg-[#FBF9F5] transform translate-x-full transition-transform duration-300 ease-out sm:hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Mobile menu"
+>
+  <!-- Header with close button -->
+  <div class="flex items-center justify-end h-[80px] px-6">
+    <button
+      id="mobile-menu-close"
+      class="w-11 h-11 flex items-center justify-center hover:opacity-70 active:opacity-50 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] rounded-sm"
+      aria-label="Close menu"
+    >
+      <img src="/images/close-button.svg" alt="" class="w-8 h-8 close-icon" />
+    </button>
+  </div>
+
+  <!-- Menu Content -->
+  <div class="flex flex-col h-[calc(100%-80px)] items-center justify-center px-6 py-8">
+    <nav class="flex flex-col items-center gap-6 mb-16 w-full max-w-[360px]" aria-label="Primary navigation">
+      <a 
+        href="/" 
+        class="mobile-menu-link flex items-center justify-center gap-3 px-8 py-4 w-full text-[#500F0B] font-primary text-[18px] transition-all hover:opacity-80 active:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] focus-visible:ring-offset-2"
+        data-nav-link
+      >
+        <span class="icon w-6 h-6 flex-shrink-0" set:html={HomeIcon.replace(/fill="black"/g, 'fill="currentColor"')} />
+        <span>Home</span>
+      </a>
+      <a 
+        href="/#work" 
+        class="mobile-menu-link flex items-center justify-center gap-3 px-8 py-4 w-full text-[#500F0B] font-primary text-[18px] transition-all hover:opacity-80 active:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] focus-visible:ring-offset-2"
+        data-nav-link
+      >
+        <span class="icon w-6 h-6 flex-shrink-0" set:html={WorkIcon.replace(/fill="black"/g, 'fill="currentColor"')} />
+        <span>Work</span>
+      </a>
+      <a 
+        href="/explorations" 
+        class="mobile-menu-link flex items-center justify-center gap-3 px-8 py-4 w-full text-[#500F0B] font-primary text-[18px] transition-all hover:opacity-80 active:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] focus-visible:ring-offset-2"
+        data-nav-link
+      >
+        <span class="icon w-6 h-6 flex-shrink-0" set:html={ExplorationsIcon.replace(/fill="black"/g, 'fill="currentColor"')} />
+        <span>Explorations</span>
+      </a>
+    </nav>
+
+    <!-- Social Links - Icons only -->
+    <div class="flex items-center gap-6 mb-12">
+      <a 
+        href="https://www.instagram.com/theunisthemaker/" 
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-12 h-12 flex items-center justify-center text-[#500F0B] transition-opacity hover:opacity-70 active:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] rounded-sm"
+        aria-label="Instagram"
+      >
+        <span class="icon w-8 h-8" set:html={InstagramIcon.replace(/fill="black"/g, 'fill="currentColor"')} />
+      </a>
+      <a 
+        href="https://x.com/TheunisTheMaker" 
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-12 h-12 flex items-center justify-center text-[#500F0B] transition-opacity hover:opacity-70 active:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] rounded-sm"
+        aria-label="X (Twitter)"
+      >
+        <span class="icon w-8 h-8" set:html={TwitterIcon.replace(/fill="black"/g, 'fill="currentColor"')} />
+      </a>
+      <a 
+        href="https://www.linkedin.com/in/theunishall//" 
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-12 h-12 flex items-center justify-center text-[#500F0B] transition-opacity hover:opacity-70 active:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] rounded-sm"
+        aria-label="LinkedIn"
+      >
+        <span class="icon w-8 h-8" set:html={LinkedInIcon.replace(/fill="black"/g, 'fill="currentColor"')} />
+      </a>
+      <a 
+        href="https://github.com/theunistm" 
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-12 h-12 flex items-center justify-center text-[#500F0B] transition-opacity hover:opacity-70 active:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] rounded-sm"
+        aria-label="GitHub"
+      >
+        <span class="icon w-8 h-8" set:html={GitHubIcon.replace(/fill="black"/g, 'fill="currentColor"')} />
+      </a>
+    </div>
+
+    <!-- Meta Info -->
+    <div class="text-center text-[#500F0B] font-primary space-y-1 mb-8">
+      <p class="text-base">©2025, Theunis Hall</p>
+      <p class="text-sm">site v5.1 • updated {formattedDate} by Theunis 👨‍💻</p>
+    </div>
+
+    <!-- Resume Link -->
+    <a 
+      href="/theunis-hall-product-designer-resume.pdf" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="flex items-center justify-center gap-2 text-[#500F0B] font-primary text-base transition-opacity hover:opacity-70 active:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] rounded-sm px-4 py-2"
+    >
+      <span>Resume</span>
+      <span class="icon w-5 h-5" set:html={ResumeIcon.replace(/fill="black"/g, 'fill="currentColor"')} />
+    </a>
+  </div>
+</div>
+
+<style>
+  /* Color filter to convert close button to #500F0B */
+  .close-icon {
+    filter: brightness(0) saturate(100%) invert(12%) sepia(28%) saturate(4865%) hue-rotate(338deg) brightness(93%) contrast(101%);
+  }
+</style>
+
+<script>
+  // Mobile menu functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuButton = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+    const closeButton = document.getElementById('mobile-menu-close');
+    const navLinks = menu?.querySelectorAll('[data-nav-link]');
+    
+    if (!menuButton || !menu || !closeButton) return;
+
+    let previouslyFocusedElement: HTMLElement | null = null;
+    const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+    // Open menu
+    const openMenu = () => {
+      previouslyFocusedElement = document.activeElement as HTMLElement;
+      menu.classList.remove('translate-x-full');
+      menu.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      
+      // Focus first focusable element
+      setTimeout(() => {
+        const firstFocusable = menu.querySelector(focusableElements) as HTMLElement;
+        firstFocusable?.focus();
+      }, 100);
+    };
+
+    // Close menu
+    const closeMenu = () => {
+      menu.classList.add('translate-x-full');
+      menu.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      
+      // Restore focus to menu button
+      setTimeout(() => {
+        previouslyFocusedElement?.focus();
+      }, 100);
+    };
+
+    // Event listeners
+    menuButton.addEventListener('click', openMenu);
+    closeButton.addEventListener('click', closeMenu);
+    
+    // Close on navigation
+    navLinks?.forEach(link => {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.getAttribute('aria-hidden') === 'false') {
+        closeMenu();
+      }
+    });
+
+    // Focus trap
+    menu.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      
+      const focusable = Array.from(menu.querySelectorAll(focusableElements)) as HTMLElement[];
+      const firstFocusable = focusable[0];
+      const lastFocusable = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
+        }
+      } else {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
+      }
+    });
+  });
+</script>

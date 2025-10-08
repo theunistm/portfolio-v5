@@ -3,6 +3,8 @@ import "../styles/global.css";
 import "../styles/fonts.css";
 import "../styles/navigation.css";
 import Navigation from "../components/Navigation.astro";
+import MobileMenuButton from "../components/MobileMenuButton.astro";
+import MobileMenu from "../components/MobileMenu.astro";
 
 const {
   title = "Product designer — Theunis",
@@ -61,6 +63,8 @@ const ogType = "website";
   <body class="min-h-dvh page-fade-init">
     <slot />
     <Navigation currentPath={currentPath} />
+    <MobileMenuButton />
+    <MobileMenu currentPath={currentPath} />
     <!-- Custom cursor element -->
     <div id="custom-cursor" class="custom-cursor" aria-hidden="true"></div>
     <!-- Page fade-in on first load -->
@@ -166,9 +170,25 @@ const ogType = "website";
     <script>
       // Custom Cursor Script
       (function () {
-        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const cursorEl = document.getElementById('custom-cursor');
         if (!cursorEl) return;
+
+        // Detect if device has touch capability
+        const isTouchDevice = () => {
+          return (
+            'ontouchstart' in window ||
+            navigator.maxTouchPoints > 0 ||
+            navigator.msMaxTouchPoints > 0
+          );
+        };
+
+        // Exit early if touch device - no custom cursor on mobile/tablet
+        if (isTouchDevice()) {
+          cursorEl.style.display = 'none';
+          return;
+        }
+
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         // Enable custom cursor (apply to both body and html to avoid edge cases)
         document.body.classList.add('use-custom-cursor');

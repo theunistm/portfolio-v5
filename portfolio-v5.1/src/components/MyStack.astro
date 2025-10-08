@@ -19,8 +19,8 @@ const { title = "My stack", className = "" } = Astro.props as Props;
   .my-stack {
     display: inline-flex;
     align-items: center;
-    gap: 14px;
-    padding: 10px 14px;
+    gap: 10px;
+    padding: 8px 12px;
     border: 1px solid #A77E75;
     background: transparent;
     color: #500F0B;
@@ -28,32 +28,59 @@ const { title = "My stack", className = "" } = Astro.props as Props;
     user-select: none;
   }
 
+  @media (min-width: 768px) {
+    .my-stack {
+      gap: 14px;
+      padding: 10px 14px;
+    }
+  }
+
   .stack-label {
     font-family: 'PP Mondwest', serif;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 400;
     line-height: 1;
     white-space: nowrap;
   }
 
+  @media (min-width: 768px) {
+    .stack-label {
+      font-size: 24px;
+    }
+  }
+
   .stack-icons-wrapper {
     position: relative;
-    height: 44px;
-    width: 98px; /* 44px + (3 * 18px overlap) */
+    height: 36px;
+    width: 165px; /* Auto-unfurled on mobile */
     flex-shrink: 0;
     transition: width 240ms ease;
   }
 
-  .my-stack:hover .stack-icons-wrapper {
-    width: 200px;
+  @media (min-width: 768px) {
+    .stack-icons-wrapper {
+      height: 44px;
+      width: 200px; /* Auto-unfurled on tablet */
+    }
+  }
+
+  /* Desktop only: start furled and expand on hover */
+  @media (min-width: 1024px) {
+    .stack-icons-wrapper {
+      width: 98px; /* 44px + (3 * 18px overlap) */
+    }
+    
+    .my-stack:hover .stack-icons-wrapper {
+      width: 200px;
+    }
   }
 
   .stack-icon {
     position: absolute;
     top: 0;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     background-color: white;
     background-repeat: no-repeat;
     background-position: center;
@@ -63,58 +90,105 @@ const { title = "My stack", className = "" } = Astro.props as Props;
     cursor: default;
   }
 
-  /* Initial stacked positions with rotation */
+  @media (min-width: 768px) {
+    .stack-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+    }
+  }
+
+  /* Mobile and tablet: auto-unfurled positions (no rotation) */
   .icon-1 {
     left: 0;
     z-index: 4;
-    transform: rotate(-6deg);
+    transform: rotate(0deg);
     background-image: url('/images/stack/01-stack-windsurf.svg');
   }
 
   .icon-2 {
-    left: 18px;
+    left: 43px;
     z-index: 3;
-    transform: rotate(3deg);
+    transform: rotate(0deg);
     background-image: url('/images/stack/02-stack-figma.svg');
   }
 
   .icon-3 {
-    left: 36px;
+    left: 86px;
     z-index: 2;
-    transform: rotate(-2deg);
+    transform: rotate(0deg);
     background-image: url('/images/stack/03-stack-play.svg');
   }
 
   .icon-4 {
-    left: 54px;
+    left: 129px;
     z-index: 1;
-    transform: rotate(5deg);
+    transform: rotate(0deg);
     background-image: url('/images/stack/04-stack-blender.svg');
   }
 
-  /* Hover: unfurl and straighten */
-  .my-stack:hover .icon-1 {
-    left: 0;
-    transform: rotate(0deg);
-    transition-delay: 120ms;
+  /* Tablet: unfurled positions */
+  @media (min-width: 768px) {
+    .icon-2 {
+      left: 52px;
+    }
+
+    .icon-3 {
+      left: 104px;
+    }
+
+    .icon-4 {
+      left: 156px;
+    }
   }
 
-  .my-stack:hover .icon-2 {
-    left: 52px;
-    transform: rotate(0deg);
-    transition-delay: 80ms;
+  /* Desktop only: start stacked with rotation */
+  @media (min-width: 1024px) {
+    .icon-1 {
+      transform: rotate(-6deg);
+    }
+
+    .icon-2 {
+      left: 18px;
+      transform: rotate(3deg);
+    }
+
+    .icon-3 {
+      left: 36px;
+      transform: rotate(-2deg);
+    }
+
+    .icon-4 {
+      left: 54px;
+      transform: rotate(5deg);
+    }
   }
 
-  .my-stack:hover .icon-3 {
-    left: 104px;
-    transform: rotate(0deg);
-    transition-delay: 40ms;
-  }
+  /* Desktop only: hover to unfurl and straighten */
+  @media (min-width: 1024px) {
+    .my-stack:hover .icon-1 {
+      left: 0;
+      transform: rotate(0deg);
+      transition-delay: 120ms;
+    }
 
-  .my-stack:hover .icon-4 {
-    left: 156px;
-    transform: rotate(0deg);
-    transition-delay: 0ms;
+    .my-stack:hover .icon-2 {
+      left: 52px;
+      transform: rotate(0deg);
+      transition-delay: 80ms;
+    }
+
+    .my-stack:hover .icon-3 {
+      left: 104px;
+      transform: rotate(0deg);
+      transition-delay: 40ms;
+    }
+
+    .my-stack:hover .icon-4 {
+      left: 156px;
+      transform: rotate(0deg);
+      transition-delay: 0ms;
+    }
   }
 
   /* Tooltips */

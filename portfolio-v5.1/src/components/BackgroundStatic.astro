@@ -26,6 +26,20 @@ import './BackgroundStatic.css';
     // Set opacity from component props
     overlay.style.opacity = opacity;
     
+    // Detect Safari or small viewport and disable animation
+    const isSmallViewport = window.matchMedia("(max-width: 1023px)").matches;
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (isSmallViewport || isSafari || prefersReducedMotion) {
+      // Disable animation via JavaScript as additional safeguard
+      overlay.style.animation = 'none';
+      overlay.style.inset = '0';
+      overlay.style.transform = 'none';
+      overlay.classList.add('noise-static');
+      console.log('Noise animation disabled:', { isSmallViewport, isSafari, prefersReducedMotion });
+    }
+    
     generateNoiseTexture(overlay);
   });
 

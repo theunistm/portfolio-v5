@@ -3,6 +3,7 @@
 // Handles structure, semantics, and theming for project entries
 import FlowsList from './FlowsList';
 import PhonePreview from './PhonePreview';
+import PhonePreviewModal from './PhonePreviewModal';
 import CaseStudyModal from './CaseStudyModal';
 import type { ProjectProps } from './types';
 
@@ -39,21 +40,21 @@ const categoriesText = categories.join(', ');
 <section 
   role="region"
   aria-labelledby={projectId}
-  class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-16 mb-[200px]"
+  class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 md:gap-8 lg:gap-16 mb-20 md:mb-32 lg:mb-[200px]"
   style={`--project: ${theme.color}; font-family: 'PP Mondwest', serif`}
 >
   <div class="project-content">
     <!-- Project Header -->
-    <header class="flex items-baseline gap-3 mb-4">
-      <img class="project-icon w-8 h-8 relative top-[3px] inline-block align-middle" src={icon} alt="{title} icon" width="32" height="32" />
-      <h2 id={projectId} class="text-[color:var(--project)] text-2xl font-medium">{title}</h2>
+    <header class="flex items-baseline gap-2 md:gap-3 mb-3 md:mb-4">
+      <img class="project-icon w-7 h-7 md:w-8 md:h-8 relative top-[3px] inline-block align-middle" src={icon} alt="{title} icon" width="32" height="32" />
+      <h2 id={projectId} class="text-[color:var(--project)] text-xl md:text-2xl font-medium">{title}</h2>
     </header>
 
     <!-- Meta information -->
-    <p class="mb-3 flex items-center gap-3 flex-wrap" style={`color: var(--project)`}>
+    <p class="mb-3 flex items-center gap-2 md:gap-3 flex-wrap text-sm md:text-base" style={`color: var(--project)`}>
       <span>{categoriesText}&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;{durationText}</span>
       <span 
-        class="stage-tag inline-flex items-center px-3 py-1 rounded-full text-[18px] font-normal"
+        class="stage-tag inline-flex items-center px-2.5 md:px-3 py-0.5 md:py-1 rounded-full text-base md:text-[18px] font-normal"
         style={`background-color: ${stage.fill}; border: 1px solid ${stage.stroke}; color: ${stage.stroke}; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);`}
       >
         {stage.label}
@@ -61,13 +62,13 @@ const categoriesText = categories.join(', ');
     </p>
 
     <!-- Project Summary -->
-    <p class="max-w-xl mb-4" style={`color: var(--project)`}>{summary}</p>
+    <p class="max-w-xl mb-4 text-base md:text-lg" style={`color: var(--project)`}>{summary}</p>
 
     <!-- Action Buttons -->
-    <div class="flex items-center gap-[50px] mb-10">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-8 md:gap-[50px] mb-6 md:mb-10">
       <!-- Case Study Button -->
       <button 
-        class="underline hover:text-[color:oklch(from_var(--project)_l_c_h/0.85)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--project)] rounded-sm font-normal text-base"
+        class="underline hover:text-[color:oklch(from_var(--project)_l_c_h/0.85)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--project)] rounded-sm font-normal text-sm md:text-base"
         style={`color: var(--project)`}
         data-modal-target={modalId}
       >
@@ -80,7 +81,7 @@ const categoriesText = categories.join(', ');
           href={downloadLink}
           target="_blank"
           rel="noopener noreferrer"
-          class="underline hover:text-[color:oklch(from_var(--project)_l_c_h/0.85)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--project)] rounded-sm font-normal text-base"
+          class="underline hover:text-[color:oklch(from_var(--project)_l_c_h/0.85)] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--project)] rounded-sm font-normal text-sm md:text-base"
           style={`color: var(--project)`}
         >
           Download app
@@ -90,17 +91,17 @@ const categoriesText = categories.join(', ');
 
     <!-- Flows Section -->
     <div class="flows-section">
-      <h2 class="text-xl font-medium mb-6" style={`color: var(--project)`}>Highlighted Flows</h2>
+      <h2 class="text-lg md:text-xl font-medium mb-4 md:mb-6" style={`color: var(--project)`}>Highlighted Flows</h2>
       
       <!-- FlowsList Component (React) -->
-      <div class="space-y-4">
+      <div class="space-y-2 md:space-y-4">
         <FlowsList client:load flows={flows} projectColor={theme.color} hoverColor={theme.hoverColor} channelId={channelId} />
       </div>
     </div>
   </div>
 
-  <!-- Phone Preview (Right Column) -->
-  <div class="phone-preview-container">
+  <!-- Phone Preview (Right Column) - Hidden on mobile -->
+  <div class="phone-preview-container hidden lg:block">
     <PhonePreview client:load channelId={channelId} />
   </div>
 
@@ -111,6 +112,12 @@ const categoriesText = categories.join(', ');
     title={title}
     content={caseStudy}
     projectColor={theme.color}
+  />
+
+  <!-- Mobile/Tablet Phone Preview Modal -->
+  <PhonePreviewModal 
+    client:load
+    channelId={channelId}
   />
 </section>
 

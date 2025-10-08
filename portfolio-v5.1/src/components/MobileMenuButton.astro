@@ -1,0 +1,31 @@
+---
+// MobileMenuButton.astro - Hamburger menu button (mobile only)
+import MenuIcon from '../icons/menu.svg?raw';
+---
+
+<!-- Mobile Menu Button - Only visible on mobile -->
+<button
+  id="mobile-menu-button"
+  class="fixed top-4 right-4 z-[90] min-w-[44px] min-h-[44px] w-11 h-11 flex items-center justify-center rounded-full bg-[#FBF9F5]/90 backdrop-blur-md border border-[#EAE2DE] text-[#500F0B] shadow-lg hover:bg-[#FBF9F5] active:bg-[#FBF9F5]/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#500F0B] sm:hidden [&_svg]:w-6 [&_svg]:h-6"
+  aria-label="Open menu"
+  aria-expanded="false"
+  aria-controls="mobile-menu"
+  set:html={MenuIcon.replace(/fill="black"/g, 'fill="currentColor"')}
+></button>
+
+<script>
+  // Update aria-expanded when menu opens/closes
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuButton = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+    
+    if (!menuButton || !menu) return;
+
+    const observer = new MutationObserver(() => {
+      const isOpen = menu.getAttribute('aria-hidden') === 'false';
+      menuButton.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    observer.observe(menu, { attributes: true, attributeFilter: ['aria-hidden'] });
+  });
+</script>

@@ -1,5 +1,6 @@
 /**
  * CSS-based static background effect
+ * Animated on desktop Chromium, static elsewhere to prevent flicker
  */
 .fuzzy-overlay-container {
   position: fixed;
@@ -26,6 +27,40 @@
   100% {
     transform: translateX(-10%) translateY(-10%);
   }
+}
+
+/* Disable animation on small screens (mobile/tablet) */
+@media (max-width: 1023px) {
+  .fuzzy-overlay {
+    animation: none !important;
+    inset: 0; /* Reset to normal bounds when not animating */
+    transform: none;
+  }
+}
+
+/* Disable animation on Safari (WebKit-specific) to prevent flicker */
+@supports (-webkit-backdrop-filter: blur(1px)) and (not (backdrop-filter: blur(1px))) {
+  .fuzzy-overlay {
+    animation: none !important;
+    inset: 0;
+    transform: none;
+  }
+}
+
+/* Respect user motion preferences everywhere */
+@media (prefers-reduced-motion: reduce) {
+  .fuzzy-overlay {
+    animation: none !important;
+    inset: 0;
+    transform: none;
+  }
+}
+
+/* JavaScript-added class for explicit static mode */
+.fuzzy-overlay.noise-static {
+  animation: none !important;
+  inset: 0;
+  transform: none;
 }
 
 /* Add class for light background */
