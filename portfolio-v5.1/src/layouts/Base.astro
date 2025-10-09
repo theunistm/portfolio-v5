@@ -48,15 +48,38 @@ const absoluteOgImage = Astro.site ? new URL(ogImage, Astro.site).toString() : o
     <meta name="twitter:image" content={absoluteOgImage} />
     <!-- Mark JS-enabled early so CSS can provide a no-JS fallback -->
     <script>document.documentElement.classList.add('js');</script>
-    <!-- Critical inline CSS to ensure first paint starts hidden and can fade in -->
+    <!-- Critical inline CSS - MUST render before any content -->
     <style>
-      /* Keep tiny and scoped: mirrors rules in global.css */
-      body.page-fade-init { opacity: 0; }
-      body { transition: opacity 360ms ease; }
-      @media (prefers-reduced-motion: reduce) { body { transition: none; } }
+      /* Force preloader to show immediately, before any JS runs */
+      #preloader-overlay {
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 9999 !important;
+        display: flex !important;
+        opacity: 1 !important;
+        pointer-events: all !important;
+      }
+      
+      /* Keep body and main content hidden until preloader removes this class */
+      body.page-fade-init {
+        opacity: 0 !important;
+      }
+      
+      body.page-fade-ready {
+        opacity: 1;
+        transition: opacity 360ms ease;
+      }
+      
+      @media (prefers-reduced-motion: reduce) {
+        body.page-fade-ready { transition: none; }
+      }
     </style>
     <noscript>
-      <style>body.page-fade-init{opacity:1 !important}</style>
+      <style>
+        /* No JS: hide preloader and show content immediately */
+        #preloader-overlay { display: none !important; }
+        body.page-fade-init { opacity: 1 !important; }
+      </style>
     </noscript>
     <!-- Preload custom cursor assets -->
     <link rel="preload" as="image" href="/cursors/cursor-default.svg" />

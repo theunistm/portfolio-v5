@@ -390,12 +390,16 @@
       }
     };
 
-    // Assets to preload
+    // Assets to preload - focus on actual above-the-fold content
     const criticalAssets = [
-      // Hero image
+      // Hero/profile image (always visible)
       { url: '/images/profile-01.png', type: 'image' },
-      // First flow poster
-      { url: '/flows/videos/my-pharmacy/01-mp-home.jpg', type: 'image' }
+      // First project's app icon (My Pharmacy)
+      { url: '/images/prj-app-icon-mypharm.png', type: 'image' },
+      // First flow poster that appears on hover (My Pharmacy - Home flow)
+      { url: '/flows/videos/my-pharmacy/01-mp-home.jpg', type: 'image' },
+      // Second flow poster (immediate hover target)
+      { url: '/flows/videos/my-pharmacy/02-mp-scripts.jpg', type: 'image' }
     ];
 
     // Add font loading using Font Loading API
@@ -430,14 +434,27 @@
     // Handle reduced motion - show briefly then hide
     if (prefersReducedMotion) {
       console.log('[Preloader] Reduced motion detected, showing briefly');
-      setTimeout(hidePreloader, 300);
+      // Still wait for DOM to avoid flash
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          setTimeout(hidePreloader, 200);
+        }, { once: true });
+      } else {
+        setTimeout(hidePreloader, 200);
+      }
       return;
     }
 
-    // Handle repeat visits - short delay
+    // Handle repeat visits - quick but still wait for DOM ready
     if (hasVisited) {
       console.log('[Preloader] Repeat visit detected, using short delay');
-      setTimeout(hidePreloader, REPEAT_VISIT_DELAY);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          setTimeout(hidePreloader, REPEAT_VISIT_DELAY);
+        }, { once: true });
+      } else {
+        setTimeout(hidePreloader, REPEAT_VISIT_DELAY);
+      }
       return;
     }
 
@@ -480,23 +497,23 @@
       assetsReady = true; // Continue anyway
     });
 
-    // 3. Wait for above-the-fold images to decode
+    // 3. Wait for critical images to decode and be ready to paint
     const waitForImageDecode = waitForDOM.then(() => {
-      // Find hero image in DOM
+      // Find all critical images in DOM
       const heroImg = document.querySelector('img[src="/images/profile-01.png"]') as HTMLImageElement;
+      const imagesToDecode = heroImg ? [heroImg] : [];
       
-      if (heroImg && heroImg.decode) {
-        return heroImg.decode()
+      if (imagesToDecode.length > 0 && imagesToDecode[0].decode) {
+        return Promise.all(imagesToDecode.map(img => 
+          img.decode()
+            .catch(() => console.warn('[Preloader] Image decode failed:', img.src))
+        ))
           .then(() => {
-            console.log('[Preloader] Hero image decoded and ready to paint');
-            imagesDecoded = true;
-          })
-          .catch(() => {
-            console.warn('[Preloader] Image decode failed, continuing');
+            console.log('[Preloader] Critical images decoded and ready to paint');
             imagesDecoded = true;
           });
       } else {
-        console.log('[Preloader] No hero image found or decode not supported');
+        console.log('[Preloader] No critical images found or decode not supported');
         imagesDecoded = true;
         return Promise.resolve();
       }
