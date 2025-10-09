@@ -60,25 +60,20 @@ const absoluteOgImage = Astro.site ? new URL(ogImage, Astro.site).toString() : o
         pointer-events: all !important;
       }
       
-      /* Keep body and main content hidden until preloader removes this class */
-      body.page-fade-init {
-        opacity: 0 !important;
+      /* Hide everything except the preloader until we explicitly reveal */
+      body:not(.preloader-revealed) > :not(#preloader-overlay) {
+        display: none !important;
       }
       
-      body.page-fade-ready {
-        opacity: 1;
-        transition: opacity 360ms ease;
-      }
-      
-      @media (prefers-reduced-motion: reduce) {
-        body.page-fade-ready { transition: none; }
-      }
+      /* Optional: fade the overlay itself; content is revealed by removing the gate class */
+      #preloader-overlay { transition: opacity 480ms ease; }
+      #preloader-overlay.is-hidden { opacity: 0; pointer-events: none; }
     </style>
     <noscript>
       <style>
         /* No JS: hide preloader and show content immediately */
         #preloader-overlay { display: none !important; }
-        body.page-fade-init { opacity: 1 !important; }
+        body:not(.preloader-revealed) > :not(#preloader-overlay) { display: block !important; }
       </style>
     </noscript>
     <!-- Preload custom cursor assets -->
@@ -86,14 +81,16 @@ const absoluteOgImage = Astro.site ? new URL(ogImage, Astro.site).toString() : o
     <link rel="preload" as="image" href="/cursors/cursor-click.svg" />
     <link rel="preload" as="image" href="/cursors/cursor-external.svg" />
   </head>
-  <body class="min-h-dvh page-fade-init">
+  <body class="min-h-dvh">
     <Preloader />
-    <slot />
-    <Navigation currentPath={currentPath} />
-    <MobileMenuButton />
-    <MobileMenu currentPath={currentPath} />
-    <!-- Custom cursor element -->
-    <div id="custom-cursor" class="custom-cursor" aria-hidden="true"></div>
+    <div id="app-root" style="display:none">
+      <slot />
+      <Navigation currentPath={currentPath} />
+      <MobileMenuButton />
+      <MobileMenu currentPath={currentPath} />
+      <!-- Custom cursor element -->
+      <div id="custom-cursor" class="custom-cursor" aria-hidden="true"></div>
+    </div>
     <!-- Page fade-in controlled by Preloader component -->
     <!-- The preloader handles removing 'page-fade-init' and adding 'page-fade-ready' -->
     <!-- This ensures content only fades in when actually ready to display -->

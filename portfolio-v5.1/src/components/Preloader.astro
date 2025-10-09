@@ -3,7 +3,7 @@
 // Shows on first load, preloads critical assets, then fades out
 ---
 
-<div id="preloader-overlay" class="preloader-overlay" aria-live="polite" aria-label="Loading content">
+<div id="preloader-overlay" class="preloader-overlay" aria-live="polite" aria-label="Loading content" style="position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#FBF9F5;">
   <div class="preloader-content">
     <div class="preloader-text">loading</div>
     <div class="preloader-animation" aria-hidden="true">
@@ -294,8 +294,8 @@
 <script>
   (function() {
     const STORAGE_KEY = 'portfolio-preloader-shown';
-    const MAX_TIMEOUT = 2800; // 2.8 seconds max
-    const REPEAT_VISIT_DELAY = 400; // Quick delay for repeat visits
+    const FIRST_VISIT_TIMEOUT = 2800;
+    const REPEAT_VISIT_TIMEOUT = 1200; // shorter guard but still waits for readiness
     
     const overlay = document.getElementById('preloader-overlay');
     if (!overlay) return;
@@ -364,12 +364,14 @@
       // Remove scroll lock
       document.body.classList.remove('preloader-active');
       
-      // Trigger page fade-in FIRST (remove page-fade-init)
-      document.body.classList.remove('page-fade-init');
-      document.body.classList.add('page-fade-ready');
+      // Reveal the rest of the DOM by removing the visibility gate
+      document.body.classList.add('preloader-revealed');
+      const appRoot = document.getElementById('app-root');
+      if (appRoot) {
+        (appRoot as HTMLElement).style.display = 'block';
+      }
       
-      // Then fade out the preloader overlay slightly delayed
-      // This ensures content starts fading in before preloader fades out (no gap)
+      // Fade out the preloader overlay next frame for a cross-fade effect
       requestAnimationFrame(() => {
         overlay.classList.add('is-hidden');
       });
@@ -445,23 +447,13 @@
       return;
     }
 
-    // Handle repeat visits - quick but still wait for DOM ready
-    if (hasVisited) {
-      console.log('[Preloader] Repeat visit detected, using short delay');
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-          setTimeout(hidePreloader, REPEAT_VISIT_DELAY);
-        }, { once: true });
-      } else {
-        setTimeout(hidePreloader, REPEAT_VISIT_DELAY);
-      }
-      return;
-    }
+    // For repeat visits we still run the full readiness flow, just with a shorter timeout
 
-    // First visit - preload assets
-    console.log('[Preloader] First visit, preloading assets');
+    // Begin preloading flow
+    console.log('[Preloader] Preloading assets');
     
     // Set maximum timeout
+    const MAX_TIMEOUT = hasVisited ? REPEAT_VISIT_TIMEOUT : FIRST_VISIT_TIMEOUT;
     timeoutId = window.setTimeout(() => {
       console.log('[Preloader] Timeout reached, forcing reveal');
       assetsReady = true;
@@ -519,8 +511,8 @@
       }
     });
 
-    // Wait for ALL conditions, then reveal
-    Promise.all([waitForDOM, waitForAssets, waitForImageDecode])
+    // Wait for ALL conditions and fonts, then reveal
+    Promise.all([waitForDOM, waitForAssets, waitForImageDecode, (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(() => {}) : Promise.resolve()])
       .then(() => {
         checkReadyToReveal();
       });
