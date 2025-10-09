@@ -343,5 +343,76 @@ const absoluteOgImage = Astro.site ? new URL(ogImage, Astro.site).toString() : o
         });
       })();
     </script>
+
+    <!-- Mobile tooltip positioning script -->
+    <script>
+      // Position tooltips properly on mobile to prevent cutoff
+      document.addEventListener('DOMContentLoaded', () => {
+        const isMobile = () => window.innerWidth <= 768;
+        
+        if (!isMobile()) return; // Only run on mobile
+        
+        // Create a dynamic stylesheet for mobile tooltips
+        const style = document.createElement('style');
+        style.id = 'mobile-tooltip-styles';
+        document.head.appendChild(style);
+        
+        // Update positioning for all tooltips
+        const updateTooltipPositions = () => {
+          if (!isMobile()) return;
+          
+          const tips = document.querySelectorAll('.tip');
+          const viewportWidth = window.innerWidth;
+          const viewportCenter = viewportWidth / 2;
+          
+          tips.forEach((tip, index) => {
+            // Add unique data attribute if not present
+            if (!tip.dataset.tipId) {
+              tip.dataset.tipId = `tip-${index}`;
+            }
+            
+            const tipRect = tip.getBoundingClientRect();
+            const tipCenter = tipRect.left + (tipRect.width / 2);
+            const offset = viewportCenter - tipCenter;
+            
+            // Set CSS custom property for this specific tooltip
+            tip.style.setProperty('--tooltip-offset', `${offset}px`);
+          });
+        };
+        
+        // Apply the CSS rule that uses the custom property
+        style.textContent = `
+          @media (max-width: 768px) {
+            .tip::after {
+              left: 50% !important;
+              transform: translateX(calc(-50% + var(--tooltip-offset, 0px))) !important;
+            }
+          }
+        `;
+        
+        // Initial positioning
+        updateTooltipPositions();
+        
+        // Update on interactions (for dynamically loaded content)
+        document.addEventListener('mouseenter', (e) => {
+          if (e.target.closest('.tip')) {
+            updateTooltipPositions();
+          }
+        }, true);
+        
+        document.addEventListener('touchstart', (e) => {
+          if (e.target.closest('.tip')) {
+            updateTooltipPositions();
+          }
+        }, true);
+        
+        // Reposition on resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(updateTooltipPositions, 100);
+        });
+      });
+    </script>
   </body>
 </html>
