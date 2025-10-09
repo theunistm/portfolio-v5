@@ -5,6 +5,7 @@ import "../styles/navigation.css";
 import Navigation from "../components/Navigation.astro";
 import MobileMenuButton from "../components/MobileMenuButton.astro";
 import MobileMenu from "../components/MobileMenu.astro";
+import Preloader from "../components/Preloader.astro";
 
 const {
   title = "Product designer — Theunis",
@@ -63,6 +64,7 @@ const absoluteOgImage = Astro.site ? new URL(ogImage, Astro.site).toString() : o
     <link rel="preload" as="image" href="/cursors/cursor-external.svg" />
   </head>
   <body class="min-h-dvh page-fade-init">
+    <Preloader />
     <slot />
     <Navigation currentPath={currentPath} />
     <MobileMenuButton />
