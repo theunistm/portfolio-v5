@@ -47,13 +47,19 @@ export default function PhonePreview({ channelId }: Props) {
       v.load(); // Reload sources
       v.currentTime = 0;
       
-      // Wait for video to be ready before playing to avoid blank flash
+      // Strategy: if preloader warmed assets, attempt immediate play.
+      // Otherwise, wait for canplay to avoid blank flashes.
       const playWhenReady = () => {
         const p = v.play();
         if (p && typeof p.then === 'function') p.catch(() => {});
       };
-      
-      if (v.readyState >= 3) {
+
+      const preloaded = (window as any).__preloaded === true;
+      if (preloaded) {
+        playWhenReady();
+        // Also ensure playback once data is ready (defensive)
+        if (v.readyState < 3) v.addEventListener('canplay', playWhenReady, { once: true });
+      } else if (v.readyState >= 3) {
         // HAVE_FUTURE_DATA or HAVE_ENOUGH_DATA
         playWhenReady();
       } else {

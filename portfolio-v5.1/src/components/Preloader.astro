@@ -294,8 +294,8 @@
 <script>
   (function() {
     const STORAGE_KEY = 'portfolio-preloader-shown';
-    const FIRST_VISIT_TIMEOUT = 2800;
-    const REPEAT_VISIT_TIMEOUT = 1200; // shorter guard but still waits for readiness
+    const FIRST_VISIT_TIMEOUT = 2500; // per brief
+    const REPEAT_VISIT_TIMEOUT = 300; // cap repeat visits ~300ms
     
     const overlay = document.getElementById('preloader-overlay');
     if (!overlay) return;
@@ -343,10 +343,24 @@
     // Prevent body scroll while preloader is visible
     document.body.classList.add('preloader-active');
     
-    // Track what's ready
-    let assetsReady = false;
-    let domReady = false;
-    let imagesDecoded = false;
+    // Helper utils
+    const saveData = (navigator as any)?.connection?.saveData === true;
+    const rIC = (window as any).requestIdleCallback || ((cb: any) => setTimeout(cb, 500));
+
+    const loadImage = (src: string) => new Promise<void>((resolve) => {
+      const i = new Image();
+      i.onload = () => resolve();
+      i.onerror = () => resolve(); // don't block on errors
+      i.src = src;
+    });
+
+    const warmPrefetch = (url: string) => {
+      if (saveData) return;
+      try {
+        fetch(url, { method: 'GET', mode: 'cors', cache: 'force-cache', credentials: 'omit' })
+          .catch(() => {});
+      } catch {}
+    };
 
     let timeoutId: number | null = null;
 
@@ -382,56 +396,18 @@
       }, 600);
     };
 
-    const checkReadyToReveal = () => {
-      console.log('[Preloader] Checking readiness:', { assetsReady, domReady, imagesDecoded });
-      
-      // Only reveal when ALL conditions are met
-      if (assetsReady && domReady && imagesDecoded) {
-        console.log('[Preloader] All conditions met, revealing content');
-        hidePreloader();
-      }
-    };
-
-    // Assets to preload - focus on actual above-the-fold content
-    const criticalAssets = [
-      // Hero/profile image (always visible)
-      { url: '/images/profile-01.png', type: 'image' },
-      // First project's app icon (My Pharmacy)
-      { url: '/images/prj-app-icon-mypharm.png', type: 'image' },
-      // First flow poster that appears on hover (My Pharmacy - Home flow)
-      { url: '/flows/videos/my-pharmacy/01-mp-home.jpg', type: 'image' },
-      // Second flow poster (immediate hover target)
-      { url: '/flows/videos/my-pharmacy/02-mp-scripts.jpg', type: 'image' }
-    ];
-
-    // Add font loading using Font Loading API
-    const fontPromises: Promise<void>[] = [];
-    if (document.fonts && document.fonts.load) {
-      fontPromises.push(
-        document.fonts.load('400 24px "PP Mondwest"')
-          .then(() => console.log('[Preloader] PP Mondwest font loaded'))
-          .catch((err) => {
-            console.warn('[Preloader] Font loading failed:', err);
-          })
-      );
+    // Build preload targets per brief
+    const preloadTargets: Promise<any>[] = [];
+    if (document.fonts && 'ready' in document.fonts) {
+      preloadTargets.push((document.fonts as any).ready.catch(() => {}));
     }
+    preloadTargets.push(loadImage('/images/profile-01.png'));
+    preloadTargets.push(loadImage('/flows/videos/my-pharmacy/01-mp-home.jpg'));
 
-    const preloadAsset = (asset: { url: string; type: string }) => {
-      return new Promise<void>((resolve) => {
-        if (asset.type === 'image') {
-          const img = new Image();
-          img.onload = () => {
-            console.log(`[Preloader] Image loaded: ${asset.url}`);
-            resolve();
-          };
-          img.onerror = () => {
-            console.warn(`[Preloader] Image failed to load: ${asset.url}`);
-            resolve(); // Still resolve to not block
-          };
-          img.src = asset.url;
-        }
-      });
-    };
+    // Optional warm prefetch of first flow video (do not await)
+    warmPrefetch('/flows/videos/my-pharmacy/01-mp-home.webm');
+
+    // No longer need per-asset loader; using loadImage helper above
 
     // Handle reduced motion - show briefly then hide
     if (prefersReducedMotion) {
@@ -447,74 +423,21 @@
       return;
     }
 
-    // For repeat visits we still run the full readiness flow, just with a shorter timeout
-
     // Begin preloading flow
     console.log('[Preloader] Preloading assets');
-    
-    // Set maximum timeout
     const MAX_TIMEOUT = hasVisited ? REPEAT_VISIT_TIMEOUT : FIRST_VISIT_TIMEOUT;
-    timeoutId = window.setTimeout(() => {
-      console.log('[Preloader] Timeout reached, forcing reveal');
-      assetsReady = true;
-      domReady = true;
-      imagesDecoded = true;
-      hidePreloader();
-    }, MAX_TIMEOUT);
+    const timeoutP = new Promise((resolve) => { timeoutId = window.setTimeout(resolve, MAX_TIMEOUT); });
 
-    // 1. Wait for DOM to be ready
-    const waitForDOM = new Promise<void>((resolve) => {
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-          console.log('[Preloader] DOM ready');
-          domReady = true;
-          resolve();
-        }, { once: true });
-      } else {
-        console.log('[Preloader] DOM already ready');
-        domReady = true;
-        resolve();
-      }
-    });
-
-    // 2. Preload critical assets (images + fonts)
-    const waitForAssets = Promise.all([
-      ...criticalAssets.map(preloadAsset),
-      ...fontPromises
-    ]).then(() => {
-      console.log('[Preloader] All assets loaded');
-      assetsReady = true;
-    }).catch((err) => {
-      console.error('[Preloader] Error preloading assets:', err);
-      assetsReady = true; // Continue anyway
-    });
-
-    // 3. Wait for critical images to decode and be ready to paint
-    const waitForImageDecode = waitForDOM.then(() => {
-      // Find all critical images in DOM
-      const heroImg = document.querySelector('img[src="/images/profile-01.png"]') as HTMLImageElement;
-      const imagesToDecode = heroImg ? [heroImg] : [];
-      
-      if (imagesToDecode.length > 0 && imagesToDecode[0].decode) {
-        return Promise.all(imagesToDecode.map(img => 
-          img.decode()
-            .catch(() => console.warn('[Preloader] Image decode failed:', img.src))
-        ))
-          .then(() => {
-            console.log('[Preloader] Critical images decoded and ready to paint');
-            imagesDecoded = true;
-          });
-      } else {
-        console.log('[Preloader] No critical images found or decode not supported');
-        imagesDecoded = true;
-        return Promise.resolve();
-      }
-    });
-
-    // Wait for ALL conditions and fonts, then reveal
-    Promise.all([waitForDOM, waitForAssets, waitForImageDecode, (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(() => {}) : Promise.resolve()])
+    // Race: either all targets settle or timeout wins
+    Promise.race([Promise.allSettled(preloadTargets), timeoutP])
       .then(() => {
-        checkReadyToReveal();
+        (window as any).__preloaded = true;
+        // Idle prefetch next posters/videos lightly
+        rIC(() => {
+          loadImage('/flows/videos/my-pharmacy/02-mp-scripts.jpg');
+          warmPrefetch('/flows/videos/my-pharmacy/02-mp-scripts.webm');
+        });
+        hidePreloader();
       });
   })();
 </script>
