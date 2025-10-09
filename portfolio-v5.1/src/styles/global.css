@@ -252,8 +252,11 @@ html.use-custom-cursor * {
   background-color: transparent;
   mix-blend-mode: normal;
   transform: translate(-50%, -50%) scale(1);
-  transition: transform 120ms ease, background-color 120ms ease, opacity 120ms ease, box-shadow 120ms ease;
-  will-change: transform, background-color, opacity, box-shadow;
+  transition: transform 120ms ease, opacity 120ms ease;
+  will-change: transform;
+  /* Force hardware acceleration but only for transform */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Clicking state: subtle scale-down pulse */
@@ -310,6 +313,7 @@ body.modal-open nav {
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease;
+  will-change: opacity;
 }
 
 /* Also hide the blur effect from navigation */

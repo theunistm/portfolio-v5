@@ -56,9 +56,9 @@ const isActive = (itemPath: string) => {
 };
 ---
 
-<nav class="hidden sm:flex fixed bottom-8 z-50 left-1/2 transform -translate-x-1/2">
+<nav class="hidden sm:flex fixed bottom-8 z-50 left-1/2 transform -translate-x-1/2" style="will-change: transform; backface-visibility: hidden;">
   <!-- Single navbar with two groups -->
-  <div class="flex items-center gap-8 rounded-[20px] border border-[#EAE2DE] bg-[#FBF9F5]/50 backdrop-blur-md px-3 py-3">
+  <div class="flex items-center gap-8 rounded-[20px] border border-[#EAE2DE] bg-[#FBF9F5]/50 backdrop-blur-md px-3 py-3" style="transform: translateZ(0);">
     <!-- Group 1: Page Navigation -->
     <div class="flex items-center gap-0">
       <NavItem href="/" label="Home" currentPath={currentPath} iconSvg={HomeIcon} />
@@ -167,30 +167,48 @@ const isActive = (itemPath: string) => {
         }
       };
       
+      // Use a single observer with debouncing to prevent rapid flickering
+      let observerTimeout = null;
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            // Work section is in view
-            setNavItemActive(homeLink, homeIcon, false);
-            setNavItemActive(workLink, workIcon, true);
-          } else {
-            // Home section is in view
-            setNavItemActive(homeLink, homeIcon, true);
-            setNavItemActive(workLink, workIcon, false);
+          // Clear any pending updates
+          if (observerTimeout) {
+            clearTimeout(observerTimeout);
           }
+          
+          // Debounce the state change to prevent flickering
+          observerTimeout = setTimeout(() => {
+            if (entry.isIntersecting) {
+              // Work section is in view
+              setNavItemActive(homeLink, homeIcon, false);
+              setNavItemActive(workLink, workIcon, true);
+            } else {
+              // Home section is in view
+              setNavItemActive(homeLink, homeIcon, true);
+              setNavItemActive(workLink, workIcon, false);
+            }
+          }, 50); // 50ms debounce to prevent rapid toggling
         });
-      }, { threshold: 0.2 }); // Trigger when 20% of the element is visible
+      }, { 
+        threshold: 0.3, // Increased threshold for more stable detection
+        rootMargin: '-10% 0px -10% 0px' // Add margin to reduce edge cases
+      });
       
       observer.observe(workSection);
 
-      // Set initial states based on current view
-      const initialCheck = new IntersectionObserver((entries) => {
-        const isWorkVisible = entries[0].isIntersecting;
-        setNavItemActive(homeLink, homeIcon, !isWorkVisible);
-        setNavItemActive(workLink, workIcon, isWorkVisible);
-        initialCheck.disconnect(); // Only need to check once on page load
+      // Set initial state based on scroll position
+      const workRect = workSection.getBoundingClientRect();
+      const isWorkVisible = workRect.top < window.innerHeight * 0.7;
+      setNavItemActive(homeLink, homeIcon, !isWorkVisible);
+      setNavItemActive(workLink, workIcon, isWorkVisible);
+      
+      // Cleanup on page unload to prevent memory leaks
+      window.addEventListener('pagehide', () => {
+        if (observerTimeout) {
+          clearTimeout(observerTimeout);
+        }
+        observer.disconnect();
       });
-      initialCheck.observe(workSection);
     }
   });
 </script>

@@ -209,7 +209,9 @@ const absoluteOgImage = Astro.site ? new URL(ogImage, Astro.site).toString() : o
           mouseX = e.clientX;
           mouseY = e.clientY;
           // Ensure visible as soon as we move inside the window
-          cursorEl.classList.remove('is-hidden');
+          if (cursorEl.classList.contains('is-hidden')) {
+            cursorEl.classList.remove('is-hidden');
+          }
           if (prefersReduced) {
             move(mouseX, mouseY);
             return;
@@ -243,17 +245,34 @@ const absoluteOgImage = Astro.site ? new URL(ogImage, Astro.site).toString() : o
 
         const interactiveSelector = 'a, button, [role="button"], input[type="button"], input[type="submit"], .cursor-pointer';
 
+        // Track current cursor state to prevent unnecessary class changes
+        let currentState = 'default';
+        
+        const setCursorState = (newState) => {
+          if (currentState === newState) return; // Skip if already in this state
+          currentState = newState;
+          
+          // Batch class changes to prevent flickering
+          if (newState === 'external') {
+            cursorEl.classList.add('is-external');
+            cursorEl.classList.remove('is-clicking');
+          } else if (newState === 'clicking') {
+            cursorEl.classList.add('is-clicking');
+            cursorEl.classList.remove('is-external');
+          } else {
+            cursorEl.classList.remove('is-clicking', 'is-external');
+          }
+        };
+
         const onPointerOver = (e) => {
           const a = findAnchor(e.target);
           const interactive = e.target.closest ? e.target.closest(interactiveSelector) : null;
           if (a && isExternalLink(a)) {
-            cursorEl.classList.add('is-external');
-            cursorEl.classList.remove('is-clicking');
+            setCursorState('external');
             return;
           }
           if (interactive) {
-            cursorEl.classList.add('is-clicking');
-            cursorEl.classList.remove('is-external');
+            setCursorState('clicking');
           }
         };
         const onPointerOut = (e) => {
@@ -262,13 +281,11 @@ const absoluteOgImage = Astro.site ? new URL(ogImage, Astro.site).toString() : o
           const toAnchor = toEl && findAnchor(toEl);
           if (toAnchor && isExternalLink(toAnchor)) {
             // Moving to another external link keeps external state
-            cursorEl.classList.add('is-external');
-            cursorEl.classList.remove('is-clicking');
+            setCursorState('external');
             return;
           }
           if (!stillInInteractive) {
-            cursorEl.classList.remove('is-clicking');
-            cursorEl.classList.remove('is-external');
+            setCursorState('default');
           }
         };
 

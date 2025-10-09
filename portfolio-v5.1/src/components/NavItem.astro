@@ -16,7 +16,8 @@ const isActive =
 
 <a 
   href={href}
-  class="flex items-center gap-2 px-3 py-2 rounded-[12px] transition-all text-[#500F0B] opacity-50 hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[#500F0B] focus-visible:outline-none font-primary nav-font"
+  class="flex items-center gap-2 px-3 py-2 rounded-[12px] transition-colors transition-opacity duration-200 text-[#500F0B] opacity-50 hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[#500F0B] focus-visible:outline-none font-primary nav-font"
+  style="backface-visibility: hidden; -webkit-backface-visibility: hidden;"
   aria-current={isActive ? 'page' : undefined}
   data-section={href === '/#work' ? 'work' : ''}
   data-nav-item
