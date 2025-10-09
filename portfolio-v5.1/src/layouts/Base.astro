@@ -71,26 +71,9 @@ const absoluteOgImage = Astro.site ? new URL(ogImage, Astro.site).toString() : o
     <MobileMenu currentPath={currentPath} />
     <!-- Custom cursor element -->
     <div id="custom-cursor" class="custom-cursor" aria-hidden="true"></div>
-    <!-- Page fade-in on first load -->
-    <script>
-      // Prefer DOMContentLoaded so the fade happens as soon as the DOM is ready.
-      (function(){
-        const activate = () => {
-          // Force a reflow so the browser registers the initial opacity:0
-          void document.body.offsetWidth;
-          // Next frame, toggle classes to trigger the transition
-          requestAnimationFrame(() => {
-            document.body.classList.add('page-fade-ready');
-            document.body.classList.remove('page-fade-init');
-          });
-        };
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', activate, { once: true });
-        } else {
-          activate();
-        }
-      })();
-    </script>
+    <!-- Page fade-in controlled by Preloader component -->
+    <!-- The preloader handles removing 'page-fade-init' and adding 'page-fade-ready' -->
+    <!-- This ensures content only fades in when actually ready to display -->
     
     <script>
       // Alignment checker script

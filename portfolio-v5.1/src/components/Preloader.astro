@@ -144,7 +144,7 @@
     width: 9px;
     height: 9px;
     background-color: #500F0B;
-    border-radius: 2px;
+    border-radius: 0;
     opacity: 0.25;
     transform: scale(0.85);
     transition: opacity 80ms ease, transform 80ms ease;
@@ -343,6 +343,53 @@
     // Prevent body scroll while preloader is visible
     document.body.classList.add('preloader-active');
     
+    // Track what's ready
+    let assetsReady = false;
+    let domReady = false;
+    let imagesDecoded = false;
+
+    let timeoutId: number | null = null;
+
+    const hidePreloader = () => {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+
+      console.log('[Preloader] Hiding preloader and revealing content');
+
+      // Mark as visited for future loads
+      localStorage.setItem(STORAGE_KEY, 'true');
+      
+      // Remove scroll lock
+      document.body.classList.remove('preloader-active');
+      
+      // Trigger page fade-in FIRST (remove page-fade-init)
+      document.body.classList.remove('page-fade-init');
+      document.body.classList.add('page-fade-ready');
+      
+      // Then fade out the preloader overlay slightly delayed
+      // This ensures content starts fading in before preloader fades out (no gap)
+      requestAnimationFrame(() => {
+        overlay.classList.add('is-hidden');
+      });
+      
+      // Remove from DOM after transition
+      setTimeout(() => {
+        overlay.remove();
+      }, 600);
+    };
+
+    const checkReadyToReveal = () => {
+      console.log('[Preloader] Checking readiness:', { assetsReady, domReady, imagesDecoded });
+      
+      // Only reveal when ALL conditions are met
+      if (assetsReady && domReady && imagesDecoded) {
+        console.log('[Preloader] All conditions met, revealing content');
+        hidePreloader();
+      }
+    };
+
     // Assets to preload
     const criticalAssets = [
       // Hero image
@@ -362,29 +409,6 @@
           })
       );
     }
-
-    let timeoutId: number | null = null;
-
-    const hidePreloader = () => {
-      if (timeoutId !== null) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
-
-      // Mark as visited for future loads
-      localStorage.setItem(STORAGE_KEY, 'true');
-      
-      // Remove scroll lock
-      document.body.classList.remove('preloader-active');
-      
-      // Fade out overlay
-      overlay.classList.add('is-hidden');
-      
-      // Remove from DOM after transition
-      setTimeout(() => {
-        overlay.remove();
-      }, 600);
-    };
 
     const preloadAsset = (asset: { url: string; type: string }) => {
       return new Promise<void>((resolve) => {
@@ -422,22 +446,66 @@
     
     // Set maximum timeout
     timeoutId = window.setTimeout(() => {
-      console.log('[Preloader] Timeout reached, hiding preloader');
+      console.log('[Preloader] Timeout reached, forcing reveal');
+      assetsReady = true;
+      domReady = true;
+      imagesDecoded = true;
       hidePreloader();
     }, MAX_TIMEOUT);
 
-    // Start preloading all assets (images + fonts)
-    Promise.all([
+    // 1. Wait for DOM to be ready
+    const waitForDOM = new Promise<void>((resolve) => {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          console.log('[Preloader] DOM ready');
+          domReady = true;
+          resolve();
+        }, { once: true });
+      } else {
+        console.log('[Preloader] DOM already ready');
+        domReady = true;
+        resolve();
+      }
+    });
+
+    // 2. Preload critical assets (images + fonts)
+    const waitForAssets = Promise.all([
       ...criticalAssets.map(preloadAsset),
       ...fontPromises
-    ])
+    ]).then(() => {
+      console.log('[Preloader] All assets loaded');
+      assetsReady = true;
+    }).catch((err) => {
+      console.error('[Preloader] Error preloading assets:', err);
+      assetsReady = true; // Continue anyway
+    });
+
+    // 3. Wait for above-the-fold images to decode
+    const waitForImageDecode = waitForDOM.then(() => {
+      // Find hero image in DOM
+      const heroImg = document.querySelector('img[src="/images/profile-01.png"]') as HTMLImageElement;
+      
+      if (heroImg && heroImg.decode) {
+        return heroImg.decode()
+          .then(() => {
+            console.log('[Preloader] Hero image decoded and ready to paint');
+            imagesDecoded = true;
+          })
+          .catch(() => {
+            console.warn('[Preloader] Image decode failed, continuing');
+            imagesDecoded = true;
+          });
+      } else {
+        console.log('[Preloader] No hero image found or decode not supported');
+        imagesDecoded = true;
+        return Promise.resolve();
+      }
+    });
+
+    // Wait for ALL conditions, then reveal
+    Promise.all([waitForDOM, waitForAssets, waitForImageDecode])
       .then(() => {
-        console.log('[Preloader] All assets loaded');
-        hidePreloader();
-      })
-      .catch((err) => {
-        console.error('[Preloader] Error preloading assets:', err);
-        hidePreloader();
+        checkReadyToReveal();
       });
   })();
 </script>
