@@ -158,7 +158,7 @@ export default function FlowsList({ flows, projectColor, hoverColor, channelId }
         >
           <div 
             ref={(el) => { flowRefs.current[index] = el; }}
-            className="group inline-flex items-center gap-2 md:gap-3 transition-colors"
+            className="group inline-flex items-center gap-10 transition-colors"
             style={{
               ['--hover-bg' as any]: hoverColor
             }}
@@ -176,14 +176,9 @@ export default function FlowsList({ flows, projectColor, hoverColor, channelId }
             onBlur={() => dispatch('clear')}
           >
             {/* Page name - clickable on mobile/tablet only */}
-            <div className="flex-shrink-0 flex items-center gap-2">
-              {/* Leading icon */}
-              <span className="flex-shrink-0" style={{ color: projectColor }}>
-                {getIcon(flow.iconType, projectColor)}
-              </span>
-              
+            <div className="flex-shrink-0">
               <button
-                className="font-bold whitespace-nowrap text-base md:text-lg lg:cursor-default text-left min-h-[44px] lg:min-h-0 flex items-center hover:opacity-80 lg:hover:opacity-100 active:opacity-60 lg:active:opacity-100 transition-opacity lg:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-current rounded-sm lg:focus-visible:ring-0"
+                className="font-bold whitespace-nowrap text-2xl md:text-[32px] underline decoration-current decoration-1 underline-offset-4 hover:no-underline lg:cursor-default text-left min-h-[44px] lg:min-h-0 flex items-center gap-2 hover:opacity-80 lg:hover:opacity-100 active:opacity-60 lg:active:opacity-100 transition-opacity lg:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-current rounded-sm lg:focus-visible:ring-0"
                 style={{ color: projectColor }}
                 onClick={(e) => {
                   // Only open modal on mobile/tablet (< 1024px)
@@ -194,6 +189,10 @@ export default function FlowsList({ flows, projectColor, hoverColor, channelId }
                 }}
                 aria-label={`View ${flow.page} preview`}
               >
+                {/* Leading icon */}
+                <span className="flex-shrink-0" style={{ color: projectColor }}>
+                  {getIcon(flow.iconType, projectColor)}
+                </span>
                 {flow.page}
               </button>
             </div>
@@ -204,7 +203,7 @@ export default function FlowsList({ flows, projectColor, hoverColor, channelId }
             </div> */}
             
             {/* Challenge and Solution */}
-            <div className="text-sm md:text-base lg:text-lg flex-shrink-0" style={{ color: projectColor }}>
+            <div className="text-lg md:text-xl flex-shrink-0" style={{ color: projectColor }}>
               <div className="flex items-center whitespace-nowrap">
                 <span
                   className="challenge tip underline decoration-current decoration-1 underline-offset-[3px] mr-1 md:mr-2 relative cursor-default"
