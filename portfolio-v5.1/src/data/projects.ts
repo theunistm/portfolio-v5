@@ -266,10 +266,10 @@ export const projects: ProjectProps[] = [
 
       <h5>Project Details</h5>
       <p>Role: Sole Product Designer</p>
-      <p>Timeline: 2023-2024</p>
+      <p>Timeline: 2021</p>
       <p>Platform: iOS, Android</p>
       <p>Company: Buddy Industries</p>
-      <p>Industry: Fintech</p>
+      <p>Industry: Travel</p>
 
       <h5>Challenge</h5>
       <p>Travel inspiration is scattered across generic feeds, making it hard to find trustworthy, on‑the‑ground guidance. The founder wanted a single source of truth built from local voices, discoverable by place, curated by topic, and rewarding to create for. The product needed friction‑light onboarding, credible identity, robust creation tools across media, and a clear path to earn, all without overwhelming users.</p>
